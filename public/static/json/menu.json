@@ -1,0 +1,36 @@
+[
+    {
+        "icon": "el-icon-lx-home",
+        "index": "home",
+        "title": "系统首页"
+    },
+    {
+        "icon": "el-icon-lx-cascades",
+        "index": "1",
+        "title": "订单管理",
+        "subs": [
+            {
+                "title": "票据审核",
+                "index": "demindreceipt",
+                "icon": "el-icon-setting"
+            },
+            {
+                "title": "订单管理列表",
+                "index": "demindList",
+                "icon": "el-icon-setting"
+            },
+            {
+                "icon": "el-icon-lx-cascades",
+                "index": "1-2",
+                "title": "运单报文",
+                "subs": [
+                    {
+                        "title": "上传运单报文",
+                        "index": "toUploadWaybill",
+                        "icon": "el-icon-setting"
+                    }
+                ]
+            }
+        ]
+    }
+]
