@@ -9,7 +9,7 @@ const router = new Router({
     routes: [
         {
             path: '/',
-            redirect: '/demindreceipt',
+            redirect: '/home',
             meta: { title: '' }
         },
         {
@@ -36,6 +36,11 @@ const router = new Router({
                     path: '/toUploadWaybill',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/dingdan/toUploadWaybill.vue'),
                     meta: { title: '上传运单报文', permission: true }
+                },
+                {
+                    path: '/ceshi',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/ceshi/ceshi.vue'),
+                    meta: { title: 'ceshi', permission: true }
                 },
                 {
                     path: '/404',
@@ -69,46 +74,18 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     setTimeout(() => {
         const role = store.state.cars[0]
-        // const role = 'su'
-        // console.log(role)
         document.title = `${to.meta.title}`;
         if (!role && to.path !== '/login') {
             return next('/login');
         } else {
             if (to.meta.permission) {
-                //权限数组
                 let rolesw = JSON.parse(sessionStorage.getItem("menu"))
+                console.log(rolesw)
                 let rolesarr = [];
-                for (const i in rolesw) {
-                    if (rolesw[i].subs) {
-                        for (const j in rolesw[i].subs) {
-                            if (rolesw[i].subs[j].subs) {
-                                for (const k in rolesw[i].subs[j].subs) {
-                                    if (rolesw[i].subs[j].subs[k].subs) {
-
-                                    } else {
-                                        rolesarr.push('/' + rolesw[i].subs[j].subs[k].index);
-                                    }
-                                }
-                            } else {
-                                rolesarr.push('/' + rolesw[i].subs[j].index);
-                            }
-                        }
-                    } else {
-                        rolesarr.push('/' + rolesw[i].index);
-                    }
+                for (const i in rolesw.data) {
+                    rolesarr.push('/' + rolesw.data[i].href);
                 }
-                // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
-                rolesarr.indexOf(to.path) !== -1 ? next() : next('/403')
-
-
-                // let rolesw = JSON.parse(sessionStorage.getItem("menu"))
-                // let rolesarr = [];
-                // console.log(rolesw)
-                // for (const i in rolesw.data) {
-                //     rolesarr.push('/' + rolesw.data[i].href);
-                // }
-                // next()
+                next()
             } else {
                 next()
             }

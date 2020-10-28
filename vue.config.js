@@ -6,10 +6,11 @@ module.exports = {
         proxy: {
             // http://192.168.124.9:80/canggang/manager/login?password=4M8S3C2Rm%2BIBPe6Yh0Ll8w==&mobile=17700008851&captcha=5cqu
             '/api':{
-                target:'http://192.168.124.9:80/',
+                target:'http://192.168.124.9:80/canggang',
+                // target:'http://www.canggangwulian.com/canggang',
                 changeOrigin:true,
                 pathRewrite:{
-                    '^/api':''
+                    '^/canggang':''
                 }
             }
            

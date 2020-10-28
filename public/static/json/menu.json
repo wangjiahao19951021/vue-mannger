@@ -32,5 +32,10 @@
                 ]
             }
         ]
+    },
+    {
+        "icon": "el-icon-lx-home",
+        "index": "ceshi",
+        "title": "ceshi"
     }
 ]

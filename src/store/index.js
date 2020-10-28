@@ -9,10 +9,12 @@ export default new Vuex.Store({
       cars: ''
     },
     actions: {
+      // 初始化
       initCars ({commit}) {
         let cars = getCars();
         commit(SYNC_UPDATE, cars)
     },
+    // 添加
       addGoodInCar ({commit}, goodinfo) {
         let cars = getCars()
         if (cars.length == 0) {
@@ -21,6 +23,7 @@ export default new Vuex.Store({
         sessionStorage.cars = JSON.stringify(cars)
         commit (SYNC_UPDATE, cars)
       },
+      // 移除
       removeInCar ({commit}) {
         let cars = getCars()
         sessionStorage.removeItem('cars')
