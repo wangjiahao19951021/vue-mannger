@@ -89,7 +89,17 @@ export default {
             rows.splice(index, 1);
             console.log(rows[index])
             this.handleClose()
+        },
+        qingqiu () {
+            let that = this
+            this.$http.post(this.$config.ajax_url + '/main/buildMenu.html', {}).then((res) => {
+                if (res) {
+                    that.show()
+                }
+            });
         }
+    },
+    onload () {
     }
 };
 </script>
