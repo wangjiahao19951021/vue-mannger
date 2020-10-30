@@ -47,11 +47,12 @@ axios.interceptors.request.use(
             params.append(key, data[key])
         }
         config.data = params
-        // if (store.state.cars[0] !== undefined) {
-        //     let token = store.state.cars[0].data.data
-        //     // 默认值与接口传来的参数进行合并（注：接口参数与默认值不可重复）
-        //     params.append('token', store.state.cars[0].data.data)
-        // }
+        console.log(store.state.users)
+        if (store.state.users !== "") {
+            let token = store.state.users.data.data
+            // 默认值与接口传来的参数进行合并（注：接口参数与默认值不可重复）
+            params.append('token', store.state.users.data.data)
+        }
         return config
     },
     error => {

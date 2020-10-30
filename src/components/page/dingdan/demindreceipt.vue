@@ -2,7 +2,7 @@
     <div class="login-wraps1">
         <el-tabs type="border-card" shadow="always">
             <el-tab-pane :label="title"></el-tab-pane>
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form ref="form" :model="form" label-width="100px" :label-position="labelPosition">
                 <el-form-item label="运输日期">
                     <el-date-picker v-model="form.data_value" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日">
                     </el-date-picker>
@@ -11,7 +11,13 @@
                     <el-col :span="8">
                         <el-input v-model="form.car" :disabled="true"></el-input>
                     </el-col>
-                    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="dialogVisible = true">选择</el-button>
+                    <el-button plain icon="el-icon-check" @click="select1">选择</el-button>
+                </el-form-item>
+                <el-form-item label="选择收货方">
+                    <el-col :span="8">
+                        <el-input v-model="form.car" :disabled="true"></el-input>
+                    </el-col>
+                    <el-button plain icon="el-icon-check" @click="select1">选择</el-button>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit">立即发布</el-button>
@@ -19,40 +25,42 @@
                 </el-form-item>
             </el-form>
         </el-tabs>
-
-        <el-dialog title="选择车辆" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-            <span>选择车辆</span>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-            </span>
-        </el-dialog>
+        <selectPer ref="tan1"></selectPer>
     </div>
 </template>
 
 <script>
+import selectPer from "../tanchuang/selectPer"
 export default {
-    components: {},
+    components: {
+        selectPer
+    },
     data() {
         return {
+            labelPosition: 'left',
             title: '',
-            dialogVisible: false,
             form: {
                 data_value: '',
                 car: ''
-            }
+            },
+            
         };
     },
     methods: {
         onSubmit() {
             this.form.data_value = new Date(this.form.data_value).toLocaleDateString().replace(/\//g, '-');
             console.log(this.form.data_value);
+        },
+        select1 () {
+            this.$refs.tan1.show();
         }
     },
     mounted() {
         this.title = this.$route.meta.title;
     },
-    created() {}
+    created() {
+         this.$http.post(this.$config.ajax_url + '/main/buildMenu.html', {}).then((res) => {});
+    }
 };
 </script>
 
