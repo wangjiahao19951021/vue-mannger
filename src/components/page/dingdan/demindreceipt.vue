@@ -2,127 +2,57 @@
     <div class="login-wraps1">
         <el-tabs type="border-card" shadow="always">
             <el-tab-pane :label="title"></el-tab-pane>
-            <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                <el-form-item label="审批人">
-                    <el-input v-model="formInline.user" placeholder="审批人" ></el-input>
+            <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item label="运输日期">
+                    <el-date-picker v-model="form.data_value" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日">
+                    </el-date-picker>
                 </el-form-item>
-                <el-form-item label="活动区域">
-                    <el-select v-model="formInline.region" placeholder="活动区域">
-                        <el-option label="区域一" value="1"></el-option>
-                        <el-option label="区域二" value="2"></el-option>
-                    </el-select>
+                <el-form-item label="选择车辆">
+                    <el-col :span="8">
+                        <el-input v-model="form.car" :disabled="true"></el-input>
+                    </el-col>
+                    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="dialogVisible = true">选择</el-button>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSubmit" icon="el-icon-search">查询</el-button>
+                    <el-button type="primary" @click="onSubmit">立即发布</el-button>
+                    <el-button>重置</el-button>
                 </el-form-item>
-                <el-table
-                    ref="singleTable"
-                    :data="tableData"
-                    highlight-current-row
-                    @cell-dblclick="handleCurrentChange"
-                    style="width: 100%"
-                >
-                    <el-table-column type="index" width="50"></el-table-column>
-                    <el-table-column property="date" label="日期" width="120"></el-table-column>
-                    <el-table-column property="name" label="姓名" width="120"></el-table-column>
-                    <el-table-column property="address" label="地址"></el-table-column>
-                </el-table>
             </el-form>
-            <br />
-            <el-pagination background layout="prev, pager, next" :total="100"></el-pagination>
-        <el-progress type="circle" :percentage="percentage1" :size="10"></el-progress>
-
         </el-tabs>
-        <el-dialog
-            title="详细内容"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :close-on-click-modal="false"
-        >
-        
-            <el-form :model="editForm" label-width="80px" ref="editForm" >
-                <el-form-item label="日期" prop="date">
-                    <el-input v-model="editForm.date" auto-complete="off" :disabled="editor" ></el-input>
-                </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="editForm.name" auto-complete="off" :disabled="editor"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="editForm.address" auto-complete="off" :disabled="editor"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="handeditor">编辑</el-button>
-                <el-button type="primary">提交</el-button>
-            </div>
+
+        <el-dialog title="选择车辆" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <span>选择车辆</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
         </el-dialog>
     </div>
 </template>
 
 <script>
 export default {
-    components: {
-    },
+    components: {},
     data() {
         return {
-            editor: true,
-            editForm: {
-                id: 0,
-                date: '',
-                name: 0,
-                address: ''
-            },
-            percentage1: 0,
-            formInline: {
-                user: '',
-                region: ''
-            },
             title: '',
-            tableData: [
-                
-            ],
-            currentRow: null,
-            dialogVisible: false
+            dialogVisible: false,
+            form: {
+                data_value: '',
+                car: ''
+            }
         };
     },
     methods: {
         onSubmit() {
-            let user = this.formInline.user;
-            let region = this.formInline.region;
-        },
-        handleCurrentChange(val) {
-            this.currentRow = val;
-            // console.log(val.id)
-            // console.log(val)
-            this.dialogVisible = true;
-            this.editForm = val;
-            this.editor = true;
-        },
-        handleEdit: function(index, row) {
-            this.editFormVisible = true;
-            this.editForm = Object.assign({}, row);
-        },
-        handeditor() {
-            this.editor = false;
+            this.form.data_value = new Date(this.form.data_value).toLocaleDateString().replace(/\//g, '-');
+            console.log(this.form.data_value);
         }
     },
     mounted() {
         this.title = this.$route.meta.title;
-        this.$http.get('/static/json/table.json', {}).then(res => {
-            if (res) {
-                this.tableData = res.data
-             }
-            })
     },
-    created () {
-        let a = setInterval(()=> {
-            this.percentage1 ++
-            if (this.percentage1 == 100) {
-                clearInterval(a)
-            }
-        }, 100)
-    }
-    
+    created() {}
 };
 </script>
 

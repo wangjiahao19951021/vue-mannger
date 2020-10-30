@@ -19,20 +19,39 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI, {
     size: 'small'
 });
+import config from "./commonjs/config"
+Vue.prototype.$config = config;
+
+
+import { Loading } from "element-ui"
+Vue.use(Loading);
+let loading;
+function startLoading() {    //使用Element loading-start 方法
+  loading = ElementUI.Loading.service({
+    lock: true,
+    text: 'Loading',
+    spinner: 'el-icon-loading',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+}
+function endLoading() {    //使用Element loading-close 方法
+  loading.close()
+}
 
 axios.interceptors.request.use(
     config => {
+        startLoading()
         let data = config.data;
         let params = new URLSearchParams()
         for (var key in config.data) {
             params.append(key, data[key])
         }
-        // if (config.method === 'post') {
-        //     config.data = qs.stringify(config.data)
-        // }
         config.data = params
-        // console.log(config)
-        // config.headers.cc = "1"
+        // if (store.state.cars[0] !== undefined) {
+        //     let token = store.state.cars[0].data.data
+        //     // 默认值与接口传来的参数进行合并（注：接口参数与默认值不可重复）
+        //     params.append('token', store.state.cars[0].data.data)
+        // }
         return config
     },
     error => {
@@ -43,8 +62,9 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(function (response) {
     // console.log(response)
     // 对响应数据做点什么
+    endLoading()
     return response;
-  }, function (error) {
+}, function (error) {
     // 对响应错误做点什么
     return Promise.reject(error);
 });

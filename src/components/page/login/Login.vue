@@ -2,23 +2,18 @@
     <div class="login-wrap">
         <div class="ms-login">
             <div class="ms-title">用户登录</div>
-            <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
+            <el-form :model="param" ref="login" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
                     <el-input v-model="param.username" placeholder="username">
                         <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input
-                        type="password"
-                        placeholder="password"
-                        v-model="param.password"
-                        @keyup.enter.native="submitForm()"
-                    >
+                    <el-input type="password" placeholder="password" v-model="param.password" @keyup.enter.native="submitForm()">
                         <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
                     </el-input>
                 </el-form-item>
-                <div>
+                <!-- <div>
                     <el-form-item>
                     <el-input
                         type="text"
@@ -29,30 +24,28 @@
                     </el-input>
                     </el-form-item>
                     <div class="yzm_box">
-                        <img :src="src" alt="" @click="qiehuan" class="yzm">
+                        <img :src="src" alt="" @click="" class="yzm">
                     </div>
-                </div>
+                </div> -->
                 <div class="login-btn">
                     <el-button type="primary" @click="submitForm()">登录</el-button>
                 </div>
-                <p class="login-tips">河北集宗科技有限公司&nbsp;版权所有</p>
+                <p class="login-tips">&copy; 河北集宗科技有限公司&nbsp;版权所有</p>
             </el-form>
         </div>
     </div>
 </template>
 
 <script>
-// import AES from "../../../commonjs/aes/aes"
-
 import { mapActions } from 'vuex';
 export default {
     name: 'codetest',
     data() {
         return {
             param: {
-                username: '17700008851',
-                password: '123456',
-                circ: ''
+                username: 'admin',
+                password: '123123',
+                circ: '1234'
             },
             rules: {
                 username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -60,29 +53,11 @@ export default {
                 circ: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
             },
             value: '',
-            values: '',
-            src: 'http://localhost:8080/canggang/manager/captcha/login.html'
+            values: ''
         };
     },
     methods: {
-        
-        ...mapActions(['addGoodInCar']),
         submitForm() {
-
-            //             let mes = {
-            //                 name: "hahah",
-
-            //             };
-
-            // this.$http.get('/static/json/menu.json', {}).then(res => {
-            //                 if (res.data) {
-            //                     this.addGoodInCar(mes);
-            //                     sessionStorage.setItem('menu', JSON.stringify(res.data));
-            //                     this.$message.success('登录成功');
-            //                     this.$router.push('/');
-            //                 }
-            //             });
-            //             return
             let that = this;
             if (this.param.username == '') {
                 this.$message.error('请输入用户名');
@@ -98,55 +73,43 @@ export default {
             }
             let mobile, password;
             this.$http
-                .post('/canggang/manager/login.html', {
-                // .post('http://192.168.124.9:80/canggang/manager/login?password=4M8S3C2Rm%2BIBPe6Yh0Ll8w==&mobile=17700008851', {
-                    mobile: this.param.username,
+                .post(this.$config.ajax_url + '/login.html', {
+                    username: this.param.username,
                     password: this.$AES.Encrypt(this.param.password),
                     captcha: this.param.circ
                 })
-                .then(res => {
-                   console.log(document.cookie)
+                .then((res) => {
                     if (res.data.message == 'success') {
                         let mes = res.data.message;
-                        this.$http.get('/static/json/menu.json', {}).then(res => {
-                            if (res.data) {
-                                that.addGoodInCar(mes);
-                                sessionStorage.setItem('menu', JSON.stringify(res.data));
-                                this.$message.success('登录成功');
-                                this.$router.push('/');
-                            }
-                        });
+                        this.$store.commit('SYNC_UPDATE', res)
+                        this.$http
+                            .post(this.$config.ajax_url + '/main/buildMenu.html', {
+                                token: res.data.data
+                            })
+                            .then((res) => {
+                                if (res.data.success) {
+                                    let data = this.$store.state.users
+                                    data.menus = res
+                                    // 同步
+                                    this.$store.commit('SYNC_UPDATE', data)
+                                    this.$message.success('登录成功');
+                                    this.$router.push('/');
+                                }
+                            });
+                        // this.$http.get('/static/json/menu.json', {}).then((res) => {
+                        //     if (res.data) {
+                        //         sessionStorage.setItem('menu', JSON.stringify(res.data));
+                        //         this.$message.success('登录成功');
+                        //         this.$router.push('/');
+                        //     }
+                        // });
                     } else {
                         this.$message.error(res.data.message);
                         console.log('error submit!!');
                         return false;
                     }
                 });
-        },
-        qiehuan () {
-            this.src = 'http://localhost:8080/canggang/manager/captcha/login.html?data=' + Math.random()
-        },
-
-    },
-    mounted() {
-    },
-    created() {
-        // console.log(this.$store.state.cars[0])
-         this.$http.post('/canggang/manager/captcha/getcooid.html',{
-    data: {
-        a: 1
-    },
-  },
-  {
-    headers: {
-      "aa" : 'sessionId=' + 12313541354153 + '; recId=' + 123,
-      
-    }
-  }).then(res => {
-      console.log(res)
-      document.cookie = res.data.data
-      console.log(document.cookie)
-  });
+        }
     }
 };
 </script>
@@ -156,8 +119,8 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    /* background: url(../../../assets/img/login_background.36d22693.jpg) no-repeat; */
-    /* background-size: 100%; */
+    background: url(../../../assets/img/login_background.png) no-repeat;
+    background-size: 100% 100%;
     top: 0;
     left: 0;
     bottom: 0;
@@ -203,10 +166,10 @@ export default {
     border: 1px solid rgb(199, 198, 198);
     border-radius: 20%;
 }
-.yzm_box{
+.yzm_box {
     display: flex;
 }
-.yzm{
+.yzm {
     margin: 0 auto;
 }
 </style>

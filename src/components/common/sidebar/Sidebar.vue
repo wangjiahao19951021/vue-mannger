@@ -11,41 +11,41 @@
             router
         >
             <template v-for="item in items">
-                <template v-if="item.subs">
-                    <el-submenu :index="item.index" :key="item.index">
+                <template v-if="item.menu">
+                    <el-submenu :index="item.id" :key="item.id">
                         <template slot="title">
-                            <i :class="item.icon"></i>
+                            <i class="el-icon-lx-cascades"></i>
                             <span slot="title">{{ item.title }}</span>
                         </template>
-                        <template v-for="subItem in item.subs">
+                        <template v-for="subItem in item.menu">
                             <el-submenu
-                                v-if="subItem.subs"
-                                :index="subItem.index"
-                                :key="subItem.index"
+                                v-if="subItem.children.length !== 0"
+                                :index="subItem.id"
+                                :key="subItem.id"
                             >
                                 <template slot="title">
-                                    <i :class="subItem.icon"></i>
+                                    <i class="el-icon-setting"></i>
                                     {{ subItem.title }}
                                 </template>
                                 <el-menu-item
-                                    v-for="(threeItem,i) in subItem.subs"
+                                    v-for="(threeItem,i) in subItem.children"
                                     :key="i"
-                                    :index="threeItem.index"
+                                    :index="threeItem.id"
                                 >
-                                    <i :class="threeItem.icon"></i>
+                                    <i class="el-icon-setting"></i>
                                     {{ threeItem.title }}
                                 </el-menu-item>
                             </el-submenu>
-                            <el-menu-item v-else :index="subItem.index" :key="subItem.index">
-                                <i :class="subItem.icon"></i>
+                            <el-menu-item v-else :index="subItem.id" :key="subItem.id">
+                                <i class="el-icon-setting"></i>
                                 {{ subItem.title }}
                             </el-menu-item>
                         </template>
                     </el-submenu>
                 </template>
                 <template v-else>
-                    <el-menu-item :index="item.index" :key="item.index">
-                        <i :class="item.icon"></i>
+                    <el-menu-item :index="item.id" :key="item.id">
+                        <i class="el-icon-setting"></i>
                         <span slot="title">{{ item.title }}</span>
                     </el-menu-item>
                 </template>
@@ -60,7 +60,8 @@ export default {
     data() {
         return {
             collapse: false,
-            items: []
+            items: [],
+            url: ""
         };
     },
     computed: {
@@ -76,8 +77,8 @@ export default {
         });
     },
     mounted() {
-        this.items = JSON.parse(sessionStorage.getItem('menu'));
-    }
+        this.items = this.$store.state.users.menus.data.data
+    },
 };
 </script>
 
@@ -98,5 +99,14 @@ export default {
 }
 .sidebar > ul {
     height: 100%;
+}
+img{
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+.el-submenu .el-menu-item{
+    display: flex;
+    align-items: center;
 }
 </style>

@@ -72,7 +72,7 @@ export default {
             }
         },
         loginout () {
-                this.removeInCar()
+                this.$store.commit('SYNC_UPDATE', "")
                 this.$router.push('/login');
         },
         // 侧边栏折叠

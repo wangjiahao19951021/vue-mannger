@@ -23,24 +23,24 @@ const router = new Router({
                     meta: { title: '系统首页', permission: true }
                 },
                 {
-                    path: '/demindreceipt',
+                    path: '/220102',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/dingdan/demindreceipt.vue'),
-                    meta: { title: '票据审核', permission: true }
+                    meta: { title: '发布运单', permission: true }
                 },
                 {
-                    path: '/demindList',
+                    path: '/220101',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/dingdan/demindList.vue'),
-                    meta: { title: '订单管理列表', permission: true }
+                    meta: { title: '运单列表', permission: true }
                 },
                 {
-                    path: '/toUploadWaybill',
+                    path: '/220103',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/dingdan/toUploadWaybill.vue'),
-                    meta: { title: '上传运单报文', permission: true }
+                    meta: { title: '历史订单', permission: true }
                 },
                 {
-                    path: '/ceshi',
+                    path: '/240103',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/ceshi/ceshi.vue'),
-                    meta: { title: 'ceshi', permission: true }
+                    meta: { title: '数据总览', permission: true }
                 },
                 {
                     path: '/404',
@@ -73,22 +73,23 @@ const router = new Router({
 //使用钩子函数对路由进行权限跳转
 router.beforeEach((to, from, next) => {
     setTimeout(() => {
-        const role = store.state.cars[0]
+        console.log(to)
+        const role = store.state.users
         document.title = `${to.meta.title}`;
-        if (!role && to.path !== '/login') {
+        if (role.length ==  0 && to.path !== '/login') {
             return next('/login');
         } else {
-            if (to.meta.permission) {
-                let rolesw = JSON.parse(sessionStorage.getItem("menu"))
-                console.log(rolesw)
-                let rolesarr = [];
-                for (const i in rolesw.data) {
-                    rolesarr.push('/' + rolesw.data[i].href);
-                }
-                next()
-            } else {
-                next()
-            }
+            // if (to.meta.permission) {
+            //     let rolesw = store.state.users.menus.data.data
+            //     let rolesarr = [];
+            //     for (const i in rolesw) {
+            //         rolesarr.push('/' + rolesw[i].href);
+            //     }
+            //     next()
+            // } else {
+            //     next()
+            // }
+            next()
         }
     }, 1)
 

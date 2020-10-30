@@ -6,41 +6,34 @@ Vue.use(Vuex)
 const SYNC_UPDATE = 'SYNC_UPDATE'
 export default new Vuex.Store({
     state: {
-      cars: ''
+      users: '',
     },
     actions: {
-      // 初始化
-      initCars ({commit}) {
-        let cars = getCars();
-        commit(SYNC_UPDATE, cars)
-    },
-    // 添加
-      addGoodInCar ({commit}, goodinfo) {
-        let cars = getCars()
-        if (cars.length == 0) {
-          cars.push(goodinfo)
-        }
-        sessionStorage.cars = JSON.stringify(cars)
-        commit (SYNC_UPDATE, cars)
+      init({commit}) {
+        let users = ses()
+        commit(SYNC_UPDATE, users)
       },
-      // 移除
-      removeInCar ({commit}) {
-        let cars = getCars()
-        sessionStorage.removeItem('cars')
-        cars = ''
-        commit (SYNC_UPDATE, cars)
-      }
+      // 添加
+      // addGoodInCar ({commit}, data) {
+      //   let users = []
+      //   users.push(data)
+      //   commit (SYNC_UPDATE, users)
+      // },
     },
     mutations: {
-      [ SYNC_UPDATE ] (state, newcar) {
-        state.cars = newcar
+      [ SYNC_UPDATE ] (state, newusers) {
+        let data = ses()
+        data = newusers
+        sessionStorage.setItem('users', JSON.stringify(data))
+        state.users = newusers
       }
     },
     getters: {
-      
+      // 计算属性
+      //调用actions触发,购物车计算
     }
 })
-function getCars () {
-  //如果不存在就添加一个空的cars数组
-return JSON.parse(sessionStorage.cars?sessionStorage.cars:'[]')
+// 刷新init
+function ses () {
+  return JSON.parse(sessionStorage.users?sessionStorage.users:'[]')
 }

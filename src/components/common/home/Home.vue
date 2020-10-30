@@ -55,13 +55,20 @@ export default {
     },
 
     mounted() {
-        this.$http.post('/api/canggang/manager/main/buildMenu',{
-            a: 1
-        },{
-           withCredentials: true
-        }).then(res => {
-            // console.log(res)
-        });
+        // this.$http.post('/api/canggang/manager/main/buildMenu',{
+        //     a: 1
+        // },{
+        //    withCredentials: true
+        // }).then(res => {
+        //     // console.log(res)
+        // });
+        // this.$http.post(this.$config.ajax_url +  '/main/buildMenu.html', {}).then(res => {
+        //         // console.log(res)
+        // })
+        // ceShi () {
+            
+                   
+        // },
        
         
     },
