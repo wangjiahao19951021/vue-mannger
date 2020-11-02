@@ -3,112 +3,182 @@
         <el-tabs type="border-card">
             <el-tab-pane :label="title"></el-tab-pane>
             <el-form :inline="true" :model="formInline" class="demo-form-inline">
-                <el-form-item label="审批人">
-                    <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+                <el-form-item>
+                    <el-date-picker
+                        v-model="formInline.value"
+                        type="daterange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        value-format="yyyy-MM-dd"
+                    >
+                    </el-date-picker>
                 </el-form-item>
                 <el-form-item>
+                    <el-button @click="reset">重置</el-button>
                     <el-button type="primary" @click="onSubmit" icon="el-icon-search">查询</el-button>
-                    <el-button type="primary" @click="onSubmit">上传</el-button>
                 </el-form-item>
-                <el-table
-                    ref="singleTable"
-                    :data="tableData"
-                    highlight-current-row
-                    @cell-dblclick="handleCurrentChange"
-                    style="width: 100%"
-                    @selection-change="handleSelectionChange"
-                >
-                    <el-table-column type="selection" width="55"></el-table-column>
-                    <el-table-column type="index" width="50"></el-table-column>
-                    <el-table-column property="date" label="日期" width="120"></el-table-column>
-                    <el-table-column property="name" label="姓名" width="120"></el-table-column>
-                    <el-table-column property="address" label="地址"></el-table-column>
-                </el-table>
             </el-form>
             <br />
-            <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+            <el-table :data="tableData" stripe style="width: 100%">
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="订单编号">
+                                <span>{{ props.row.demindNum }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="状态">
+                                <span>{{ props.row.state == 'W' ? '未开始' : props.row.state == 'D' ? '已开始' : '已结束' }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="收货方名称">
+                                <span>{{ props.row.custName }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="车辆">
+                                <span>{{ props.row.plateNumber }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="联系电话(司机)">
+                                <span>{{ props.row.telephone }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="货物名称">
+                                <span>{{ props.row.goodsName }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="下单日期">
+                                <span>{{ props.row.createTime }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="运输时间">
+                                <span>{{ props.row.deliveryDate }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="接单时间">
+                                <span>{{ props.row.beginTime }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="签收时间">
+                                <span>{{ props.row.endTime }}</span>
+                            </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
+                <el-table-column type="index" width="50" label="序号" :index="indexMethod"> </el-table-column>
+                <el-table-column prop="demindNum" label="订单编号"> </el-table-column>
+                <el-table-column prop="custName" label="收货方名称"> </el-table-column>
+                <el-table-column prop="plateNumber" label="车辆"> </el-table-column>
+                <el-table-column prop="state" label="状态">
+                    <template slot-scope="scope">
+                        {{ scope.row.state == 'W' ? '未开始' : scope.row.state == 'D' ? '已开始' : '已结束' }}</template
+                    >
+                </el-table-column>
+                <el-table-column prop="telephone" label="联系电话(司机)"> </el-table-column>
+                <el-table-column prop="deliveryDate" label="运输时间"> </el-table-column>
+                <el-table-column prop="beginTime" label="接单时间"> </el-table-column>
+                <el-table-column prop="endTime" label="签收时间"> </el-table-column>
+                <el-table-column fixed="right" label="操作" width="120">
+                    <template slot-scope="scope">
+                        <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
+                            查看详情
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <br />
+            <el-pagination background layout="prev, pager, next" :total="total" @current-change="handleCurrentChange"> </el-pagination>
         </el-tabs>
-        <el-dialog
-            title="详细内容"
-            :visible.sync="dialogVisible"
-            width="30%"
-            :close-on-click-modal="false"
-        >
-            <el-form :model="editForm" label-width="80px" ref="editForm">
-                <el-form-item label="日期" prop="date">
-                    <el-input v-model="editForm.date" auto-complete="off" :disabled="editor"></el-input>
-                </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input v-model="editForm.name" auto-complete="off" :disabled="editor"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="editForm.address" auto-complete="off" :disabled="editor"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="handeditor">编辑</el-button>
-                <el-button type="primary">提交</el-button>
-            </div>
-        </el-dialog>
-
-        <el-backtop :bottom="100"></el-backtop>
+        <deminglistMask ref="deminglist_mask" :data_detail="data_detail"></deminglistMask>
     </div>
 </template>
 
 <script>
+import bus from '../../common/bus/bus';
+import deminglistMask from '../tanchuang/deminglist_mask';
 export default {
-    components: {},
+    components: {
+        deminglistMask
+    },
     data() {
         return {
-            editor: true,
-            editForm: {
-                id: 0,
-                date: '',
-                name: 0,
-                address: ''
-            },
             formInline: {
-                user: ''
+                value: [],
             },
             title: '',
+            total: null,
+            page: 1,
+            pageSize: 10,
             tableData: [],
-            currentRow: null,
-            dialogVisible: false,
-            multipleSelection: []
+            /*
+             * W未开始D已开始E已结束C已取消 非空
+             */
+            state: 'E',
+            data_detail: ''
         };
     },
     methods: {
+        reset() {
+            this.formInline.value = [];
+        },
         onSubmit() {
-            let user = this.formInline.user;
-            let region = this.formInline.region;
+            this.qingqiu();
         },
+        // 这里是切换页数
         handleCurrentChange(val) {
-            this.currentRow = val;
-            // console.log(val.id)
-            // console.log(val)
-            this.dialogVisible = true;
-            this.editForm = val;
-            this.editor = true;
+            this.page = val;
+            this.qingqiu();
         },
-        handleEdit: function(index, row) {
-            this.editFormVisible = true;
-            this.editForm = Object.assign({}, row);
+        // 根据分页展示序号
+        indexMethod(index) {
+            index = index + 1 + (this.page - 1) * this.pageSize;
+            return index;
         },
-        handeditor() {
-            this.editor = false;
+        qingqiu() {
+            if (this.formInline.value == null) {
+                this.formInline.value = []
+            }
+            if (this.formInline.value[0] == undefined) {
+                this.formInline.value[0] = '';
+            }
+            if (this.formInline.value[1] == undefined) {
+                this.formInline.value[1] = '';
+            }
+            this.$http
+                .post(this.$config.ajax_url + '/demindInfo/getOrderPage.html', {
+                    page: this.page,
+                    pageSize: this.pageSize,
+                    state: this.state,
+                    qbeginTime: this.formInline.value[0],
+                    qendTime: this.formInline.value[1]
+                })
+                .then((res) => {
+                    if (res.data) {
+                        this.tableData = res.data.rows;
+                        this.total = res.data.total;
+                    }
+                });
         },
-        handleSelectionChange(val) {
-            // console.log(val)
-            this.multipleSelection = val;
+        deleteRow(index, rows) {
+            this.data_detail = rows[index];
+            this.$refs.deminglist_mask.qingqiu();
         }
     },
     mounted() {
         this.title = this.$route.meta.title;
-        this.$http.get('/static/json/table.json', {}).then(res => {
-            if (res) {
-                this.tableData = res.data;
-            }
-        });
+    },
+    created() {
+        this.qingqiu();
     }
 };
 </script>

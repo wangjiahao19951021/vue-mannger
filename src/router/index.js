@@ -43,6 +43,11 @@ const router = new Router({
                     meta: { title: '数据总览', permission: true }
                 },
                 {
+                    path: '/2601',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_index.vue'),
+                    meta: { title: '车辆列表', permission: true }
+                },
+                {
                     path: '/404',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/404/404.vue'),
                     meta: { title: '404', }

@@ -1,9 +1,12 @@
 <template>
-    <el-dialog title="选择车辆" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
+    <el-dialog title="选择收货方" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
         <el-table :data="tableData" stripe style="width: 100%">
-            <el-table-column type="index" width="50" label="序号" :index="indexMethod"></el-table-column>
-            <el-table-column prop="plateNumber" label="车牌号" width="180"> </el-table-column>
-            <el-table-column prop="emissionStandard" label="排放标准" width="180"> </el-table-column>
+            <el-table-column type="index" width="50" label="序号" :index="indexMethod"> </el-table-column>
+            <el-table-column prop="custName" label="收货方名称"> </el-table-column>
+            <el-table-column prop="provName,cityName,areaName,address" label="地址">
+                 <!-- 使用作用域插槽，可以获取这一行返回的数据 -->
+                <template slot-scope="scope"> {{scope.row.provName}}{{scope.row.cityName}}{{scope.row.areaName}}{{scope.row.address}}</template>
+            </el-table-column>
             <el-table-column prop="contacts" label="联系人"> </el-table-column>
             <el-table-column prop="telephone" label="联系电话"> </el-table-column>
             <el-table-column fixed="right" label="操作" width="120">
@@ -14,8 +17,6 @@
         </el-table>
         <span slot="footer" class="dialog-footer">
             <el-pagination background layout="prev, pager, next" :total="total" @current-change="handleCurrentChange"> </el-pagination>
-            <!-- <el-button @click="handleClose">取 消</el-button> -->
-            <!-- <el-button type="primary" @click="dialogVisible = false">确 定</el-button> -->
         </span>
     </el-dialog>
 </template>
@@ -41,12 +42,12 @@ export default {
         },
         deleteRow(index, rows) {
             //$emit第一个参数对应$on的第一个参数，第二个参数是$on回调函数里面的形参
-            Bus.$emit('plateNumber', rows[index]);
+            Bus.$emit('custName', rows[index]);
             this.handleClose();
         },
         qingqiu() {
             this.$http
-                .post(this.$config.ajax_url + '/vehicle/getVehiclePage.html', {
+                .post(this.$config.ajax_url + '/cust/getCustPage.html', {
                     page: this.page,
                     pageSize: this.pageSize
                 })
