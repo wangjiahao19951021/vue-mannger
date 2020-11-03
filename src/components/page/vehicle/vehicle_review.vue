@@ -33,6 +33,7 @@
                                 }}</span>
                             </el-form-item>
                         </el-form>
+
                         <el-form label-position="left" inline class="demo-table-expand">
                             <el-form-item label="车牌号">
                                 <span>{{ props.row.plateNumber }}</span>
@@ -156,9 +157,6 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作">
                     <template slot-scope="scope">
-                        <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
-                            查看历史订单
-                        </el-button>
                         <el-button @click.native.prevent="orderDetail(scope.$index, tableData)" type="text" size="small">
                             查看详情
                         </el-button>
@@ -168,18 +166,16 @@
             <br />
             <el-pagination background layout="prev, pager, next" :total="total" @current-change="handleCurrentChange"> </el-pagination>
         </el-tabs>
-        <orderMask ref="orderMask"></orderMask>
-        <orderDetail ref="orderDetail"></orderDetail>
+        <orderReviewDetail ref="orderReviewDetail"></orderReviewDetail>
     </div>
 </template>
 
 <script>
-import orderMask from "./mask/order_mask"
-import orderDetail from "./mask/order_detail"
+import orderReviewDetail from "./mask/order_review_detail"
+import Bus from "../../common/bus/bus"
 export default {
     components: {
-        orderMask,
-        orderDetail
+        orderReviewDetail
     },
     data() {
         return {
@@ -208,15 +204,11 @@ export default {
                     label: '待审核'
                 },
                 {
-                    value: 'C',
-                    label: '通过'
-                },
-                {
                     value: 'R',
                     label: '拒绝'
                 }
             ],
-            options_value: 'C',
+            options_value: 'B',
         };
     },
     methods: {
@@ -251,19 +243,17 @@ export default {
                     }
                 });
         },
-        deleteRow(index, rows) {
-            // this.data_detail = rows[index];
-            this.$refs.orderMask.qingqiu(rows[index].vehicleId);
-        },
         orderDetail (index, rows) {
-            this.$refs.orderDetail.qingqiu(rows[index]);
+            this.$refs.orderReviewDetail.qingqiu(rows[index]);
         }
     },
     mounted() {
-        this.title = this.$route.meta.title;
+        this.title = this.$route.meta.title; 
     },
     created() {
         this.qingqiu();
+        // 这里将刷新方法传递给兄弟或子组件
+        Bus.$on('order_reivew', this.qingqiu)
     }
 };
 </script>

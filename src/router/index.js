@@ -48,6 +48,21 @@ const router = new Router({
                     meta: { title: '车辆列表', permission: true }
                 },
                 {
+                    path: '/2602',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_review.vue'),
+                    meta: { title: '车辆审核', permission: true }
+                },
+                {
+                    path: '/2604',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_come.vue'),
+                    meta: { title: '车辆加油管理', permission: true }
+                },
+                {
+                    path: '/210101',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/map/map.vue'),
+                    meta: { title: '实时浏览', permission: true }
+                },
+                {
                     path: '/404',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/404/404.vue'),
                     meta: { title: '404', }

@@ -117,9 +117,6 @@ export default {
     components: {
         deminglistMask
     },
-    props: [
-        'vehicleId'
-    ],
     data() {
         return {
             dialogVisible: false,
@@ -161,7 +158,7 @@ export default {
         show() {
             this.dialogVisible = true;
         },
-        qingqiu() {
+        qingqiu(val) {
             if (this.formInline.value == null) {
                 this.formInline.value = [];
             }
@@ -178,7 +175,7 @@ export default {
                     state: this.state,
                     qbeginTime: this.formInline.value[0],
                     qendTime: this.formInline.value[1],
-                    vehicleId: this.vehicleId
+                    vehicleId: val
                 })
                 .then((res) => {
                     if (res.data) {
