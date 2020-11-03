@@ -2,7 +2,7 @@
     <div class="login-wraps1">
         <el-tabs type="border-card">
             <el-tab-pane :label="title"></el-tab-pane>
-            <el-form :inline="true" :model="formInline" class="demo-form-inline">
+            <el-form :inline="true" class="demo-form-inline">
                 <el-form-item>
                     <el-input v-model="form.plateNumber" placeholder="请输入车牌号" clearable></el-input>
                 </el-form-item>
@@ -33,9 +33,82 @@
                                 }}</span>
                             </el-form-item>
                         </el-form>
+
                         <el-form label-position="left" inline class="demo-table-expand">
                             <el-form-item label="车牌号">
                                 <span>{{ props.row.plateNumber }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="联系人">
+                                <span>{{ props.row.contacts }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="联系电话">
+                                <span>{{ props.row.telephone }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="排放标准">
+                                <span>{{ props.row.emissionStandard }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="车辆类型">
+                                <span>{{ props.row.vehicleType }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="排量">
+                                <span>{{ props.row.emissions }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="车重">
+                                <span>{{ props.row.weight }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="承载吨数">
+                                <span>{{ props.row.load }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="行车证号">
+                                <span>{{ props.row.license }}</span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="行驶证照片">
+                                <span
+                                    ><el-image
+                                        style="width: 30px; height: 30px"
+                                        src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2942945378,442701149&fm=26&gp=0.jpg"
+                                        :preview-src-list="[
+                                            'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2942945378,442701149&fm=26&gp=0.jpg'
+                                        ]"
+                                    >
+                                        <div slot="error" class="image-slot">
+                                            <i class="el-icon-picture-outline"></i>
+                                        </div> </el-image
+                                ></span>
+                            </el-form-item>
+                        </el-form>
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="车辆照片">
+                                <span
+                                    ><el-image
+                                        style="width: 30px; height: 30px"
+                                        src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2942945378,442701149&fm=26&gp=0.jpg"
+                                        :preview-src-list="[
+                                            'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2942945378,442701149&fm=26&gp=0.jpg'
+                                        ]"
+                                    >
+                                        <div slot="error" class="image-slot">
+                                            <i class="el-icon-picture-outline"></i>
+                                        </div> </el-image
+                                ></span>
                             </el-form-item>
                         </el-form>
                     </template>
@@ -57,18 +130,26 @@
                 <el-table-column prop="plateNumber" label="车牌号"> </el-table-column>
                 <el-table-column prop="contacts" label="联系人"> </el-table-column>
                 <el-table-column prop="telephone" label="联系电话"> </el-table-column>
-                <el-table-column  label="精品图片">
-        <template slot-scope="scope">
-          <el-image style="width: 30px; height: 30px" src="http://localhost:3000/chengpei/statics/images/logo1.png" :preview-src-list="['http://localhost:3000/chengpei/statics/images/logo1.png']">
-            <div slot="error" class="image-slot">
-              <i class="el-icon-picture-outline"></i>
-              {{scope.row.licensePhoto}}
-            </div>
-          </el-image>
-        </template>
-      </el-table-column>
-                <el-table-column fixed="right" label="操作" width="120">
+                <el-table-column label="行驶证照片">
                     <template slot-scope="scope">
+                        <el-image
+                            style="width: 30px; height: 30px"
+                            src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2942945378,442701149&fm=26&gp=0.jpg"
+                            :preview-src-list="[
+                                'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2942945378,442701149&fm=26&gp=0.jpg'
+                            ]"
+                        >
+                            <div slot="error" class="image-slot">
+                                <i class="el-icon-picture-outline"></i>
+                            </div>
+                        </el-image>
+                    </template>
+                </el-table-column>
+                <el-table-column fixed="right" label="操作">
+                    <template slot-scope="scope">
+                        <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
+                            查看历史订单
+                        </el-button>
                         <el-button @click.native.prevent="deleteRow(scope.$index, tableData)" type="text" size="small">
                             查看详情
                         </el-button>
@@ -78,16 +159,15 @@
             <br />
             <el-pagination background layout="prev, pager, next" :total="total" @current-change="handleCurrentChange"> </el-pagination>
         </el-tabs>
-        <deminglistMask ref="deminglist_mask" :data_detail="data_detail"></deminglistMask>
+        <orderMask ref="orderMask" :vehicleId="vehicleId"></orderMask>
     </div>
 </template>
 
 <script>
-import bus from '../../common/bus/bus';
-import deminglistMask from '../tanchuang/deminglist_mask';
+import orderMask from "./mask/order_mask"
 export default {
     components: {
-        deminglistMask
+        orderMask
     },
     data() {
         return {
@@ -124,7 +204,8 @@ export default {
                     label: '拒绝'
                 }
             ],
-            options_value: "C"
+            options_value: 'C',
+            vehicleId: ""
         };
     },
     methods: {
@@ -160,8 +241,9 @@ export default {
                 });
         },
         deleteRow(index, rows) {
-            this.data_detail = rows[index];
-            this.$refs.deminglist_mask.qingqiu();
+            // this.data_detail = rows[index];
+            this.vehicleId = rows[index].vehicleId
+            this.$refs.orderMask.qingqiu();
         }
     },
     mounted() {
@@ -174,7 +256,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
 .login-wraps1 {
     height: 100%;
 }
@@ -183,5 +265,20 @@ export default {
 }
 .el-pagination {
     text-align: center;
+}
+.el-icon-circle-close {
+    color: white;
+}
+.demo-table-expand {
+    font-size: 0;
+}
+.demo-table-expand label {
+    width: 150px;
+    color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
 }
 </style>

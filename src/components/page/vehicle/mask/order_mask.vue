@@ -1,4 +1,5 @@
 <template>
+<el-dialog title="查看历史订单" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
     <div class="login-wraps1">
         <el-tabs type="border-card">
             <el-tab-pane :label="title"></el-tab-pane>
@@ -101,17 +102,27 @@
         </el-tabs>
         <deminglistMask ref="deminglist_mask" :data_detail="data_detail"></deminglistMask>
     </div>
+    <span slot="footer" class="dialog-footer">
+            <!-- <el-button @click="handleClose">取 消</el-button> -->
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+    </el-dialog>
+
 </template>
 
 <script>
-import bus from '../../common/bus/bus';
-import deminglistMask from '../tanchuang/deminglist_mask';
+import bus from '../../../common/bus/bus';
+import deminglistMask from '../../tanchuang/deminglist_mask';
 export default {
     components: {
         deminglistMask
     },
+    props: [
+        'vehicleId'
+    ],
     data() {
         return {
+            dialogVisible: false,
             formInline: {
                 value: []
             },
@@ -144,6 +155,12 @@ export default {
             index = index + 1 + (this.page - 1) * this.pageSize;
             return index;
         },
+        handleClose() {
+            this.dialogVisible = false;
+        },
+        show() {
+            this.dialogVisible = true;
+        },
         qingqiu() {
             if (this.formInline.value == null) {
                 this.formInline.value = [];
@@ -160,10 +177,14 @@ export default {
                     pageSize: this.pageSize,
                     state: this.state,
                     qbeginTime: this.formInline.value[0],
-                    qendTime: this.formInline.value[1]
+                    qendTime: this.formInline.value[1],
+                    vehicleId: this.vehicleId
                 })
                 .then((res) => {
                     if (res.data) {
+                        if (this.dialogVisible == false) {
+                            this.show();
+                        }
                         this.tableData = res.data.rows;
                         this.total = res.data.total;
                     }
@@ -176,9 +197,9 @@ export default {
     },
     mounted() {
         this.title = this.$route.meta.title;
+        this.title = '历史订单';
     },
     created() {
-        this.qingqiu();
     }
 };
 </script>

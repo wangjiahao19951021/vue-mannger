@@ -113,7 +113,7 @@ export default {
     data() {
         return {
             formInline: {
-                value: [],
+                value: []
             },
             title: '',
             total: null,
@@ -146,7 +146,7 @@ export default {
         },
         qingqiu() {
             if (this.formInline.value == null) {
-                this.formInline.value = []
+                this.formInline.value = [];
             }
             if (this.formInline.value[0] == undefined) {
                 this.formInline.value[0] = '';
@@ -184,7 +184,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
 .login-wraps1 {
     height: 100%;
 }
@@ -193,5 +193,17 @@ export default {
 }
 .el-pagination {
     text-align: center;
+}
+.demo-table-expand {
+    font-size: 0;
+}
+.demo-table-expand label {
+    width: 150px;
+    color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
 }
 </style>

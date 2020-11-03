@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="订单详情" :visible.sync="dialogVisible" width="50%" :before-close="handleClose">
+    <el-dialog title="订单详情" :visible.sync="dialogVisible" width="50%" :before-close="handleClose" append-to-body>
         <el-form ref="data_detail" :model="data_detail" label-width="120px" :label-position="labelPosition">
             <el-form-item label="订单编号">
                 <el-input v-model="data_detail.demindNum" disabled></el-input>
