@@ -1,218 +1,114 @@
 <template>
     <div class="login-wraps1">
         <el-tabs type="border-card">
-            <el-tab-pane :label="title"></el-tab-pane>
-            <el-form :inline="true" class="demo-form-inline">
-                <el-form-item>
-                    <el-input v-model="form.plateNumber" placeholder="请输入车牌号" clearable></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-select v-model="options_value" placeholder="请选择">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item>
-                    <el-button @click="reset">重置</el-button>
-                    <el-button type="primary" @click="onSubmit" icon="el-icon-search">查询</el-button>
-                </el-form-item>
-            </el-form>
-            <br />
-            <el-table :data="tableData" stripe style="width: 100%">
-                <el-table-column type="expand">
-                    <template slot-scope="props">
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="状态">
-                                <span>{{
-                                    props.row.certState == 'A'
-                                        ? '未提交'
-                                        : props.row.certState == 'B'
-                                        ? '待审核'
-                                        : props.row.certState == 'C'
-                                        ? '通过'
-                                        : '拒绝'
-                                }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="车牌号">
-                                <span>{{ props.row.plateNumber }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="联系人">
-                                <span>{{ props.row.contacts }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="联系电话">
-                                <span>{{ props.row.telephone }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="排放标准">
-                                <span>{{ props.row.emissionStandard }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="车辆类型">
-                                <span>{{ props.row.vehicleType }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="排量">
-                                <span>{{ props.row.emissions }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="车重">
-                                <span>{{ props.row.weight }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="承载吨数">
-                                <span>{{ props.row.load }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="行车证号">
-                                <span>{{ props.row.license }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="注册时间">
-                                <span>{{ props.row.createTime }}</span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="行驶证照片">
-                                <span
-                                    ><el-image
-                                        style="width: 30px; height: 30px;display: flex;align-items: center;"
-                                        :src="$img_url + props.row.licensePhoto"
-                                        :preview-src-list="[
-                                            $img_url + props.row.licensePhoto
-                                        ]"
-                                    >
-                                        <div slot="error" class="image-slot">
-                                            <i class="el-icon-picture-outline"></i>
-                                        </div> </el-image
-                                ></span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="车辆照片">
-                                <span
-                                    ><el-image
-                                        style="width: 30px; height: 30px;display: flex;align-items: center;"
-                                        :src="$img_url + props.row.vehiclePhoto"
-                                        :preview-src-list="[
-                                            $img_url + props.row.vehiclePhoto
-                                        ]"
-                                    >
-                                        <div slot="error" class="image-slot">
-                                            <i class="el-icon-picture-outline"></i>
-                                        </div> </el-image
-                                ></span>
-                            </el-form-item>
-                        </el-form>
-                        <el-form label-position="left" inline class="demo-table-expand">
-                            <el-form-item label="备注">
-                                <span>{{ props.row.remark }}</span>
-                            </el-form-item>
-                        </el-form>
-                    </template>
-                </el-table-column>
-                <el-table-column type="index" width="50" label="序号" :index="indexMethod"> </el-table-column>
-                <el-table-column prop="state" label="状态">
-                    <template slot-scope="scope">
-                        {{
-                            scope.row.certState == 'A'
-                                ? '未提交'
-                                : scope.row.certState == 'B'
-                                ? '待审核'
-                                : scope.row.certState == 'C'
-                                ? '通过'
-                                : '拒绝'
-                        }}</template
-                    >
-                </el-table-column>
-                <el-table-column prop="plateNumber" label="车牌号"> </el-table-column>
-                <el-table-column prop="contacts" label="联系人"> </el-table-column>
-                <el-table-column prop="telephone" label="联系电话"> </el-table-column>
-                <el-table-column label="行驶证照片">
-                    <template slot-scope="scope">
-                        <el-image
-                            style="width: 30px; height: 30px;display: flex;align-items: center;"
-                            :src="$img_url + scope.row.licensePhoto"
-                            :preview-src-list="[
-                                $img_url + scope.row.licensePhoto
-                            ]"
+            <el-tab-pane :label="title">
+                <el-form :inline="true" class="demo-form-inline">
+                    <el-form-item>
+                        <el-input v-model="form.custName" placeholder="请输入收货方名称" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button @click="reset">重置</el-button>
+                        <el-button type="primary" @click="onSubmit" icon="el-icon-search">查询</el-button>
+                    </el-form-item>
+                </el-form>
+                <br />
+                <el-table :data="tableData" stripe style="width: 100%">
+                    <el-table-column type="expand">
+                        <template slot-scope="props">
+                            <el-form label-position="left" inline class="demo-table-expand">
+                                <el-form-item label="收货方">
+                                    <span>{{ props.row.custName }}</span>
+                                </el-form-item>
+                            </el-form>
+                            <el-form label-position="left" inline class="demo-table-expand">
+                                <el-form-item label="地址">
+                                    <span>{{ props.row.provName + props.row.cityName + props.row.areaName + props.row.address }}</span>
+                                </el-form-item>
+                            </el-form>
+                            <el-form label-position="left" inline class="demo-table-expand">
+                                <el-form-item label="联系人">
+                                    <span>{{ props.row.contacts }}</span>
+                                </el-form-item>
+                            </el-form>
+                            <el-form label-position="left" inline class="demo-table-expand">
+                                <el-form-item label="联系电话">
+                                    <span>{{ props.row.telephone }}</span>
+                                </el-form-item>
+                            </el-form>
+                        </template>
+                    </el-table-column>
+                    <el-table-column type="index" width="50" label="序号" :index="indexMethod"> </el-table-column>
+                    <el-table-column prop="custName" label="收货方"> </el-table-column>
+                    <el-table-column prop="provName,cityName,areaName,address" label="地址">
+                        <!-- 使用作用域插槽，可以获取这一行返回的数据 -->
+                        <template slot-scope="scope">
+                            {{ scope.row.provName }}{{ scope.row.cityName }}{{ scope.row.areaName }}{{ scope.row.address }}</template
                         >
-                            <div slot="error" class="image-slot">
-                                <i class="el-icon-picture-outline"></i>
-                            </div>
-                        </el-image>
-                    </template>
-                </el-table-column>
-                <el-table-column fixed="right" label="操作">
-                    <template slot-scope="scope">
-                        <el-button @click.native.prevent="orderDetail(scope.$index, tableData)" type="text" size="small">
-                            查看详情
-                        </el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <br />
-            <el-pagination background layout="prev, pager, next" :total="total" @current-change="handleCurrentChange"> </el-pagination>
+                    </el-table-column>
+                    <el-table-column prop="contacts" label="联系人"> </el-table-column>
+                    <el-table-column prop="telephone" label="联系电话"> </el-table-column>
+
+                    <el-table-column fixed="right" label="操作">
+                        <template slot-scope="scope">
+                            <el-button @click.native.prevent="orderDetail(scope.$index, tableData)" type="text" size="small">
+                                查看详情
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <br />
+                <el-pagination background layout="prev, pager, next" :total="total" @current-change="handleCurrentChange"> </el-pagination>
+            </el-tab-pane>
+            <el-tab-pane label="添加店铺">
+                <el-form ref="form" :model="add" label-width="100px" :label-position="labelPosition">
+                    <el-form-item label="添加收货方">
+                        <el-input v-model="add.address" placeholder="请输入收货方"></el-input>
+                    </el-form-item>
+                    <el-form-item label="所属市区">
+                        <el-cascader
+                            v-model="add.value"
+                            :options="area_options"
+                            :props="{ expandTrigger: 'hover' }"
+                            @change="handleChange"
+                        ></el-cascader>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
         </el-tabs>
+        <shopDetail ref="shopDetail"></shopDetail>
     </div>
 </template>
 
 <script>
+import shopDetail from './mask/shop_detail';
 export default {
     components: {
+        shopDetail
     },
     data() {
         return {
+            labelPosition: 'left',
             form: {
-                plateNumber: ''
+                custName: ''
             },
             title: '',
             total: null,
             page: 1,
             pageSize: 10,
             tableData: [],
-            /*
-             * A未提交
-             * B待审核
-             * C通过
-             * R拒绝
-             */
-            data_detail: '',
-            options: [
-                {
-                    value: 'A',
-                    label: '未提交'
-                },
-                {
-                    value: 'B',
-                    label: '待审核'
-                },
-                {
-                    value: 'C',
-                    label: '通过'
-                },
-                {
-                    value: 'R',
-                    label: '拒绝'
-                }
-            ],
-            options_value: 'C',
+            add: {
+                address: '',
+                value: []
+            },
+            area_options: []
         };
     },
     methods: {
+        handleChange(value) {
+            console.log(value);
+        },
         reset() {
-            this.form.plateNumber = '';
+            this.form.custName = '';
         },
         onSubmit() {
             this.qingqiu();
@@ -229,11 +125,10 @@ export default {
         },
         qingqiu() {
             this.$http
-                .post(this.$config.ajax_url + '/vehicle/getVehiclePage.html', {
+                .post(this.$config.ajax_url + '/cust/getCustPage.html', {
                     page: this.page,
                     pageSize: this.pageSize,
-                    certState: this.options_value,
-                    plateNumber: this.form.plateNumber
+                    custName: this.form.custName
                 })
                 .then((res) => {
                     if (res.data) {
@@ -242,8 +137,30 @@ export default {
                     }
                 });
         },
-        orderDetail (index, rows) {
-            
+        orderDetail(index, rows) {
+            this.$refs.shopDetail.qingqiu(rows[index]);
+        },
+        area_address() {
+            this.$http.post('http://192.168.124.12/chengpei/areainfo/getAreaList.html', {}).then((res) => {
+                if (res.data) {
+                    let arr = [];
+                    let arr1 = []
+                    res.data.data.forEach((element, i) => {
+                        var obj = {};
+                        obj.label = element.name;
+                        obj.value = element.code;
+                        element.childList.forEach((element1, i1) => {
+                            var obj1 = {}
+                            obj1.label = element1.name;
+                            obj1.value = element1.code;
+                            arr1.push(obj1);
+                        })
+                        obj.children = arr1;
+                        arr.push(obj);
+                    });
+                    this.area_options = arr
+                }
+            });
         }
     },
     mounted() {
@@ -251,6 +168,7 @@ export default {
     },
     created() {
         this.qingqiu();
+        this.area_address();
     }
 };
 </script>
