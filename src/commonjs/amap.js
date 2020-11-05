@@ -10,7 +10,7 @@ export default function MapLoader () {
         var script = document.createElement('script')
         script.type = 'text/javascript'
         script.async = true
-        script.src = 'http://webapi.amap.com/maps?v=1.3&callback=initAMap&key=' + key + '&callback=init'
+        script.src = 'http://webapi.amap.com/maps?v=1.3&callback=initAMap&key=' + key + '&plugin=AMap.Autocomplete,AMap.PlaceSearch'
         script.onerror = reject
         document.head.appendChild(script)
       }

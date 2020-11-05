@@ -73,6 +73,11 @@ const router = new Router({
                     meta: { title: '店铺管理', permission: true }
                 },
                 {
+                    path: '/200401',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/basis/commodity_list.vue'),
+                    meta: { title: '商品管理', permission: true }
+                },
+                {
                     path: '/404',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/404/404.vue'),
                     meta: { title: '404', }

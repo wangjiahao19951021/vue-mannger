@@ -17,7 +17,9 @@ import AES from './commonjs/aes/aes'
 Vue.prototype.$AES = AES;
 Vue.config.productionTip = false;
 Vue.use(ElementUI, {
-    size: 'small'
+    size: 'small',
+    // 修改层级
+    zIndex: 1000 
 });
 import config from "./commonjs/config"
 Vue.prototype.$config = config;
