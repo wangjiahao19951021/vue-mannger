@@ -258,7 +258,7 @@ export default {
     },
     created() {
         this.qingqiu();
-        this.area_address();
+        // this.area_address();
     }
 };
 </script>

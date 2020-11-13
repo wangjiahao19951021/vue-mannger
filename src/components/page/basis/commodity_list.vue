@@ -29,6 +29,7 @@
                 </el-table-column>
                 <el-table-column type="index" width="50" label="序号" :index="indexMethod"> </el-table-column>
                 <el-table-column prop="goodsName" label="货物名称"> </el-table-column>
+                <el-table-column prop="createTime" label="创建时间"> </el-table-column>
             </el-table>
             <br />
             <el-pagination background layout="prev, pager, next" :total="total" @current-change="handleCurrentChange"> </el-pagination>
