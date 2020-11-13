@@ -2,23 +2,23 @@
 <div class="login-wraps1">
     <el-tabs type="border-card" shadow="always">
         <el-tab-pane :label="title"></el-tab-pane>
-        <el-form ref="form" :model="form" label-width="100px" :label-position="labelPosition">
-            <el-form-item label="运输日期">
+        <el-form ref="form" :model="form" label-width="100px" :label-position="labelPosition" :rules="rules">
+            <el-form-item label="运输日期" prop="data_value">
                 <el-date-picker v-model="form.data_value" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width: 100%;">
                 </el-date-picker>
             </el-form-item>
-            <el-form-item label="添加运费">
+            <el-form-item label="添加运费" prop="money">
                 <el-input v-model="form.money" placeholder="请输入运费" type="number"></el-input>
             </el-form-item>
-            <el-form-item label="选择车辆">
+            <el-form-item label="选择车辆" prop="plate_number">
                 <el-input v-model="form.plate_number" placeholder="请选择车辆" @focus="select1" :readonly="true">
                 </el-input>
             </el-form-item>
-            <el-form-item label="选择收货方">
+            <el-form-item label="选择收货方" prop="cust_name">
                 <el-input v-model="form.cust_name" placeholder="请选择收货方" @focus="select2" :readonly="true">
                 </el-input>
             </el-form-item>
-            <el-form-item label="选择货物">
+            <el-form-item label="选择货物" prop="goods">
                 <el-input v-model="form.goods" placeholder="请选择货物" @focus="select3" :readonly="true">
                 </el-input>
             </el-form-item>
@@ -66,90 +66,79 @@ export default {
                 goods_num: '',
                 goods_unit: '',
                 goods_weights: ''
+            },
+            rules: {
+                data_value: [{
+                    required: true,
+                    message: '请选择日期',
+                }],
+                money: [{
+                    required: true,
+                    message: '请输入运费',
+                }],
+                plate_number: [{
+                    required: true,
+                    message: '请选择车辆',
+                }],
+                cust_name: [{
+                    required: true,
+                    message: '请选择收货方',
+                }],
+                goods: [{
+                    required: true,
+                    message: '请选择货物',
+                }],
             }
         };
     },
     methods: {
         onSubmit() {
-            if (this.form.data_value == '') {
-                this.$message({
-                    showClose: true,
-                    message: '请选择日期',
-                    type: 'error'
-                });
-                return;
-            }
-            if (this.form.money == '') {
-                this.$message({
-                    showClose: true,
-                    message: '请输入运费',
-                    type: 'error'
-                });
-                return;
-            }
-            if (this.form.plate_number == '') {
-                this.$message({
-                    showClose: true,
-                    message: '请选择车辆',
-                    type: 'error'
-                });
-                return;
-            }
-            if (this.form.cust_name == '') {
-                this.$message({
-                    showClose: true,
-                    message: '请选择收货方',
-                    type: 'error'
-                });
-                return;
-            }
-            if (this.form.goods == '') {
-                this.$message({
-                    showClose: true,
-                    message: '请选择货物',
-                    type: 'error'
-                });
-                return;
-            }
-            /*
-             *  deliveryDate: 2020-11-02
-             *  vehicleId: 11
-             *  demindCustStr: 27
-             *  demindGoodsStr: 1
-             *  goodsCount: 1200
-             *  goodsPriceUnit: A
-             *  fare: 1000
-             *  remark:
-             */
-            this.$http
-                .post(this.$config.ajax_url + '/demindInfo/addDemind.html', {
-                    deliveryDate: this.form.data_value,
-                    vehicleId: this.form.plate_number_id,
-                    demindCustStr: this.form.cust_name_id,
-                    demindGoodsStr: this.form.goods_id,
-                    goodsCount: this.form.goods_num,
-                    goodsPriceUnit: this.form.goods_unit,
-                    fare: this.form.money,
-                    remark: this.form.remark,
-                    weights: this.form.goods_weights
-                })
-                .then((res) => {
-                    if (res.data.success) {
-                        this.$alert('添加成功', '成功', {
-                            confirmButtonText: '确定',
-                            type: 'success',
-                            callback: (action) => {
-                                this.reset();
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    /*
+                     *  deliveryDate: 2020-11-02
+                     *  vehicleId: 11
+                     *  demindCustStr: 27
+                     *  demindGoodsStr: 1
+                     *  goodsCount: 1200
+                     *  goodsPriceUnit: A
+                     *  fare: 1000
+                     *  remark:
+                     */
+                    this.$http
+                        .post(this.$config.ajax_url + '/demindInfo/addDemind.html', {
+                            deliveryDate: this.form.data_value,
+                            vehicleId: this.form.plate_number_id,
+                            demindCustStr: this.form.cust_name_id,
+                            demindGoodsStr: this.form.goods_id,
+                            goodsCount: this.form.goods_num,
+                            goodsPriceUnit: this.form.goods_unit,
+                            fare: this.form.money,
+                            remark: this.form.remark,
+                            weights: this.form.goods_weights
+                        })
+                        .then((res) => {
+                            if (res.data.success) {
+                                this.$alert('添加成功', '成功', {
+                                    confirmButtonText: '确定',
+                                    type: 'success',
+                                    callback: (action) => {
+                                        this.reset();
+                                    }
+                                });
+                            } else {
+                                this.$alert(res.data.message, '失败', {
+                                    confirmButtonText: '确定',
+                                    type: 'error',
+                                    callback: (action) => {}
+                                });
                             }
                         });
-                    } else {
-                        this.$alert(res.data.message, '失败', {
-                            confirmButtonText: '确定',
-                            type: 'error',
-                            callback: (action) => {}
-                        });
-                    }
-                });
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            })
         },
         select1() {
             this.$refs.selectPer.qingqiu();
@@ -182,6 +171,8 @@ export default {
             this.form.plate_number = '';
             this.form.cust_name = '';
             this.form.goods = '';
+            // 清空后清除验证
+            this.$refs.form.resetFields();
         }
     },
     mounted() {

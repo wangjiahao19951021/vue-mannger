@@ -38,7 +38,7 @@
                                     </el-form-item>
                                 </el-form>
                                 <el-form label-position="left" inline class="demo-table-expand">
-                                    <el-form-item label="加油量">
+                                    <el-form-item label="充电量">
                                         <span>{{ props.row.fuelQuantity }}</span>
                                     </el-form-item>
                                 </el-form>
@@ -48,7 +48,7 @@
                                     </el-form-item>
                                 </el-form>
                                 <el-form label-position="left" inline class="demo-table-expand">
-                                    <el-form-item label="加油时间">
+                                    <el-form-item label="充电时间">
                                         <span>{{ props.row.fuelTime }}</span>
                                     </el-form-item>
                                 </el-form>
@@ -63,10 +63,10 @@
                         <el-table-column prop="plateNumber" label="车牌号"> </el-table-column>
                         <el-table-column prop="contacts" label="联系人"> </el-table-column>
                         <el-table-column prop="telephone" label="联系电话"> </el-table-column>
-                        <el-table-column prop="fuelQuantity" label="加油量"> </el-table-column>
+                        <el-table-column prop="fuelQuantity" label="充电量"> </el-table-column>
                         <el-table-column prop="money" label="费用"> </el-table-column>
-                        <el-table-column prop="fuelTime" label="加油时间"> </el-table-column>
-                        <!-- 
+                        <el-table-column prop="fuelTime" label="充电时间"> </el-table-column>
+                        <!--
                         <el-table-column fixed="right" label="操作">
                             <template slot-scope="scope">
                                 <el-button @click.native.prevent="orderDetail(scope.$index, tableData)" type="text" size="small">
@@ -85,8 +85,8 @@
                         <el-form-item label="添加费用" prop="money">
                             <el-input v-model="add.money" placeholder="请输入费用" type="number"></el-input>
                         </el-form-item>
-                        <el-form-item label="加油量" prop="fuel">
-                            <el-input v-model="add.fuel" placeholder="请输入加油量"></el-input>
+                        <el-form-item label="充电量" prop="fuel">
+                            <el-input v-model="add.fuel" placeholder="请输入充电量"></el-input>
                         </el-form-item>
                         <el-form-item label="加油时间" prop="data_value">
                             <el-date-picker v-model="add.data_value" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width: 100%">
@@ -123,8 +123,8 @@ export default {
         return {
             activeName: 'first',
             label_name: {
-                first_name: "车辆加油列表",
-                second_name: "车辆加油",
+                first_name: "新能源车辆充电列表",
+                second_name: "添加充电费",
             },
             form: {
                 plateNumber: '',
@@ -151,7 +151,7 @@ export default {
                 }],
                 fuel: [{
                     required: true,
-                    message: '请输入加油量',
+                    message: '请输入充电量',
                 }],
                 data_value: [{
                     required: true,
@@ -162,7 +162,7 @@ export default {
                     message: '请选择车辆',
                 }],
             },
-            type: 'A'
+            type: 'B'
         };
     },
     methods: {

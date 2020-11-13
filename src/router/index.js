@@ -58,6 +58,16 @@ const router = new Router({
                     meta: { title: '车辆加油管理', permission: true }
                 },
                 {
+                    path: '/2605',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_new_energy.vue'),
+                    meta: { title: '新能源车辆充电费', permission: true }
+                },
+                {
+                    path: '/2606',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_new_energy.vue'),
+                    meta: { title: '新能源车辆充电费', permission: true }
+                },
+                {
                     path: '/210101',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/map/map.vue'),
                     meta: { title: '实时浏览', permission: true }

@@ -1,51 +1,50 @@
 <template>
-    <div class="header">
-        <!-- 折叠按钮 -->
-        <div class="collapse-btn" @click="collapseChage">
-            <i v-if="!collapse" class="el-icon-s-fold"></i>
-            <i v-else class="el-icon-s-unfold"></i>
-        </div>
-        <div class="logo">集宗</div>
-        <div class="header-right">
-            <div class="header-user-con">
-                <!-- 全屏显示 -->
-                <div class="btn-fullscreen" @click="handleFullScreen">
-                    <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
-                        <i class="el-icon-rank"></i>
-                    </el-tooltip>
-                </div>
-                <!-- 用户头像 -->
-                <div class="user-avator">
-                    <img src="../../../assets/img/img.jpg" />
-                </div>
-                <!-- 用户名下拉菜单 -->
-                <el-dropdown class="user-name" trigger="click" @command="handleCommand">
-                    <span class="el-dropdown-link">
-                        {{username}}
-                        <i class="el-icon-caret-bottom"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item divided command="loginout" @click="dialogVisible = true">退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-                <el-dialog
-                title="提示"
-                :visible.sync="dialogVisible"
-                width="30%"
-                >
+<div class="header">
+    <!-- 折叠按钮 -->
+    <div class="collapse-btn" @click="collapseChage">
+        <i v-if="!collapse" class="el-icon-s-fold"></i>
+        <i v-else class="el-icon-s-unfold"></i>
+    </div>
+    <div class="logo">城配</div>
+    <div class="header-right">
+        <div class="header-user-con">
+            <!-- 全屏显示 -->
+            <div class="btn-fullscreen" @click="handleFullScreen">
+                <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
+                    <i class="el-icon-rank"></i>
+                </el-tooltip>
+            </div>
+            <!-- 用户头像 -->
+            <div class="user-avator">
+                <img src="../../../assets/img/img.jpg" />
+            </div>
+            <!-- 用户名下拉菜单 -->
+            <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+                <span class="el-dropdown-link">
+                    {{username}}
+                    <i class="el-icon-caret-bottom"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item divided command="loginout" @click="dialogVisible = true">退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+            <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
                 <span>确定退出吗</span>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="dialogVisible = false">取 消</el-button>
                     <el-button type="primary" @click="loginout">确 定</el-button>
                 </span>
-                </el-dialog>
-            </div>
+            </el-dialog>
         </div>
     </div>
+</div>
 </template>
+
 <script>
 import bus from '../bus/bus';
-import {mapActions} from "vuex"
+import {
+    mapActions
+} from "vuex"
 
 export default {
     data() {
@@ -71,9 +70,9 @@ export default {
                 this.dialogVisible = true;
             }
         },
-        loginout () {
-                this.$store.commit('SYNC_UPDATE', "")
-                this.$router.push('/login');
+        loginout() {
+            this.$store.commit('SYNC_UPDATE', "")
+            this.$router.push('/login');
         },
         // 侧边栏折叠
         collapseChage() {
@@ -115,6 +114,7 @@ export default {
     }
 };
 </script>
+
 <style scoped>
 .header {
     position: relative;
@@ -124,31 +124,37 @@ export default {
     font-size: 22px;
     color: #fff;
 }
+
 .collapse-btn {
     float: left;
     padding: 0 21px;
     cursor: pointer;
     line-height: 70px;
 }
+
 .header .logo {
     float: left;
     width: 250px;
     line-height: 70px;
 }
+
 .header-right {
     float: right;
     padding-right: 50px;
 }
+
 .header-user-con {
     display: flex;
     height: 70px;
     align-items: center;
 }
+
 .btn-fullscreen {
     transform: rotate(45deg);
     margin-right: 5px;
     font-size: 24px;
 }
+
 .btn-bell,
 .btn-fullscreen {
     position: relative;
@@ -158,6 +164,7 @@ export default {
     border-radius: 15px;
     cursor: pointer;
 }
+
 .btn-bell-badge {
     position: absolute;
     right: 0;
@@ -168,25 +175,31 @@ export default {
     background: #f56c6c;
     color: #fff;
 }
+
 .btn-bell .el-icon-bell {
     color: #fff;
 }
+
 .user-name {
     margin-left: 10px;
 }
+
 .user-avator {
     margin-left: 20px;
 }
+
 .user-avator img {
     display: block;
     width: 40px;
     height: 40px;
     border-radius: 50%;
 }
+
 .el-dropdown-link {
     color: #fff;
     cursor: pointer;
 }
+
 .el-dropdown-menu__item {
     text-align: center;
 }
