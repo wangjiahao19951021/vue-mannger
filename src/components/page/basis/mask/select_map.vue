@@ -1,7 +1,7 @@
 <template>
 <el-dialog title="详细地址" :visible.sync="dialogVisible" width="50%" :before-close="handleClose" append-to-body>
-    <el-form :inline="true" class="demo-form-inline">
-        <el-form-item label="请输入详细地址">
+    <el-form ref="form" :inline="true" class="demo-form-inline" :rules="rules" :model="form">
+        <el-form-item label="请输入详细地址" prop="address">
             <el-input v-model="form.address" placeholder="请输入详细地址" clearable id="tipinput"></el-input>
         </el-form-item>
     </el-form>
@@ -26,6 +26,12 @@ export default {
                 longitude: "",
                 latitude: ""
             },
+            rules: {
+                address: [{
+                    required: true,
+                    message: '请输入详细地址',
+                }],
+            }
         };
     },
     methods: {
@@ -33,24 +39,23 @@ export default {
             this.dialogVisible = false;
         },
         determine() {
-            if (this.form.address == "") {
-                this.$message({
-                    showClose: true,
-                    message: '请输入详细地址',
-                    type: 'error'
-                });
-                return;
-            }
-            if (this.form.longitude == "" || this.form.latitude == "") {
-                this.$message({
-                    showClose: true,
-                    message: '请点击地图选择坐标',
-                    type: 'error'
-                });
-                return;
-            }
-            Bus.$emit("address_map", this.form)
-            this.handleClose()
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    if (this.form.longitude == "" || this.form.latitude == "") {
+                        this.$message({
+                            showClose: true,
+                            message: '请点击地图选择坐标',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                    Bus.$emit("address_map", this.form)
+                    this.handleClose()
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            })
         },
         show() {
             this.dialogVisible = true;

@@ -64,8 +64,28 @@ const router = new Router({
                 },
                 {
                     path: '/2606',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_new_energy.vue'),
-                    meta: { title: '新能源车辆充电费', permission: true }
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_insurance.vue'),
+                    meta: { title: '车辆保险费', permission: true }
+                },
+                {
+                    path: '/2607',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_other.vue'),
+                    meta: { title: '车辆其他费用', permission: true }
+                },
+                {
+                    path: '/2608',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_depreciation.vue'),
+                    meta: { title: '车辆折旧费', permission: true }
+                },
+                {
+                    path: '/2609',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_taxes.vue'),
+                    meta: { title: '车辆税金', permission: true }
+                },
+                {
+                    path: '/2610',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/vehicle/vehicle_person.vue'),
+                    meta: { title: '人员费用', permission: true }
                 },
                 {
                     path: '/210101',
@@ -81,6 +101,11 @@ const router = new Router({
                     path: '/200202',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/basis/shop_index.vue'),
                     meta: { title: '店铺管理', permission: true }
+                },
+                {
+                    path: '/200201',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/basis/add_shop.vue'),
+                    meta: { title: '添加店铺', permission: true }
                 },
                 {
                     path: '/200401',

@@ -88,7 +88,7 @@
                         <el-form-item label="充电量" prop="fuel">
                             <el-input v-model="add.fuel" placeholder="请输入充电量"></el-input>
                         </el-form-item>
-                        <el-form-item label="加油时间" prop="data_value">
+                        <el-form-item label="日期" prop="data_value">
                             <el-date-picker v-model="add.data_value" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width: 100%">
                             </el-date-picker>
                         </el-form-item>

@@ -28,45 +28,27 @@
                                     </el-form-item>
                                 </el-form>
                                 <el-form label-position="left" inline class="demo-table-expand">
-                                    <el-form-item label="联系人">
-                                        <span>{{ props.row.contacts }}</span>
-                                    </el-form-item>
-                                </el-form>
-                                <el-form label-position="left" inline class="demo-table-expand">
-                                    <el-form-item label="联系电话">
-                                        <span>{{ props.row.telephone }}</span>
-                                    </el-form-item>
-                                </el-form>
-                                <el-form label-position="left" inline class="demo-table-expand">
-                                    <el-form-item label="加油量">
-                                        <span>{{ props.row.fuelQuantity }}</span>
-                                    </el-form-item>
-                                </el-form>
-                                <el-form label-position="left" inline class="demo-table-expand">
                                     <el-form-item label="费用">
                                         <span>{{ props.row.money }}</span>
                                     </el-form-item>
                                 </el-form>
                                 <el-form label-position="left" inline class="demo-table-expand">
-                                    <el-form-item label="加油时间">
-                                        <span>{{ props.row.fuelTime }}</span>
+                                    <el-form-item label="日期">
+                                        <span>{{ props.row.generationTimes }}</span>
                                     </el-form-item>
                                 </el-form>
                                 <el-form label-position="left" inline class="demo-table-expand">
                                     <el-form-item label="创建时间">
-                                        <span>{{ props.row.createTime }}</span>
+                                        <span>{{ props.row.creationTimes }}</span>
                                     </el-form-item>
                                 </el-form>
                             </template>
                         </el-table-column>
                         <el-table-column type="index" width="50" label="序号" :index="indexMethod"> </el-table-column>
                         <el-table-column prop="plateNumber" label="车牌号"> </el-table-column>
-                        <el-table-column prop="contacts" label="联系人"> </el-table-column>
-                        <el-table-column prop="telephone" label="联系电话"> </el-table-column>
-                        <el-table-column prop="fuelQuantity" label="加油量"> </el-table-column>
                         <el-table-column prop="money" label="费用"> </el-table-column>
-                        <el-table-column prop="fuelTime" label="加油时间"> </el-table-column>
-                        <!-- 
+                        <el-table-column prop="generationTimes" label="日期"> </el-table-column>
+                        <!--
                         <el-table-column fixed="right" label="操作">
                             <template slot-scope="scope">
                                 <el-button @click.native.prevent="orderDetail(scope.$index, tableData)" type="text" size="small">
@@ -84,9 +66,6 @@
                     <el-form ref="form" :model="add" label-width="100px" :label-position="labelPosition" :rules="rules">
                         <el-form-item label="添加费用" prop="money">
                             <el-input v-model="add.money" placeholder="请输入费用" type="number"></el-input>
-                        </el-form-item>
-                        <el-form-item label="加油量" prop="fuel">
-                            <el-input v-model="add.fuel" placeholder="请输入加油量"></el-input>
                         </el-form-item>
                         <el-form-item label="日期" prop="data_value">
                             <el-date-picker v-model="add.data_value" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width: 100%">
@@ -123,8 +102,8 @@ export default {
         return {
             activeName: 'first',
             label_name: {
-                first_name: "车辆加油列表",
-                second_name: "车辆加油",
+                first_name: "车辆税金列表",
+                second_name: "添加车辆税金",
             },
             form: {
                 plateNumber: '',
@@ -149,10 +128,6 @@ export default {
                     required: true,
                     message: '请输入费用',
                 }],
-                fuel: [{
-                    required: true,
-                    message: '请输入加油量',
-                }],
                 data_value: [{
                     required: true,
                     message: '请选择日期',
@@ -162,7 +137,7 @@ export default {
                     message: '请选择车辆',
                 }],
             },
-            type: 'A'
+            type: 'D'
         };
     },
     methods: {
@@ -197,7 +172,7 @@ export default {
                 this.form.value[1] = '';
             }
             this.$http
-                .post(this.$config.ajax_url + '/vehicle/getVehicleFuepage.html', {
+                .post(this.$config.ajax_url + '/cost/getCostPage.html', {
                     page: this.page,
                     pageSize: this.pageSize,
                     plateNumber: this.form.plateNumber,
@@ -225,25 +200,16 @@ export default {
         add_fuel() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    /*
-                     *   /vehicle/addVehicleFue.html
-                     *   vehicleId: 11
-                     *   fuelQuantity: 100
-                     *   fuelTime: 2020-11-04
-                     *   money: 1000
-                     *   type: A
-                     */
                     this.$http
-                        .post(this.$config.ajax_url + '/vehicle/addVehicleFue.html', {
+                        .post(this.$config.ajax_url + '/cost/addcost.html', {
                             vehicleId: this.add.plate_number_id,
-                            fuelQuantity: this.add.fuel,
-                            fuelTime: this.add.data_value,
+                            generationTimes: this.add.data_value,
                             money: this.add.money,
                             type: this.type
                         })
                         .then((res) => {
-                            if (res.data.code == 1) {
-                                this.$alert(res.data.msg, '成功', {
+                            if (res.data.success) {
+                                this.$alert(res.data.message, '成功', {
                                     confirmButtonText: '确定',
                                     type: 'success',
                                     callback: (action) => {
@@ -256,7 +222,7 @@ export default {
                                     }
                                 });
                             } else {
-                                this.$alert(res.data.msg, '失败', {
+                                this.$alert(res.data.message, '失败', {
                                     confirmButtonText: '确定',
                                     type: 'error',
                                     callback: (action) => {}

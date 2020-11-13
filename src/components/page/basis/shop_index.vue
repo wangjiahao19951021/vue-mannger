@@ -63,31 +63,6 @@
             <br />
             <el-pagination background layout="prev, pager, next" :total="total" @current-change="handleCurrentChange"> </el-pagination>
         </el-tab-pane>
-        <el-tab-pane label="添加店铺">
-            <el-form ref="form" :model="add" label-width="100px" :label-position="labelPosition">
-                <el-form-item label="添加收货方">
-                    <el-input v-model="add.custName" placeholder="请输入收货方"></el-input>
-                </el-form-item>
-                <el-form-item label="所属市区">
-                    <el-cascader v-model="add.value" :options="area_options" :props="{ expandTrigger: 'hover' }" @change="handleChange" style="width: 100%"></el-cascader>
-                </el-form-item>
-                <el-form-item label="添加详细地址">
-                    <el-input v-model="add.address" :disabled="true" placeholder="请选择详细地址">
-                        <el-button slot="append" type="primary" @click="selectMap">选择</el-button>
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="添加联系人">
-                    <el-input v-model="add.contacts" placeholder="请输入联系人"></el-input>
-                </el-form-item>
-                <el-form-item label="添加联系电话">
-                    <el-input v-model="add.telephone" placeholder="请输入联系电话"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="add_shop">添 加</el-button>
-                    <el-button @click="add_reset">重 置</el-button>
-                </el-form-item>
-            </el-form>
-        </el-tab-pane>
     </el-tabs>
     <shopDetail ref="shopDetail"></shopDetail>
     <selectMap ref="selectMap"></selectMap>
