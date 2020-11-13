@@ -7,18 +7,32 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
 </head>
 <body>
+    <!-- dsaf -->
     <script>
-        let page, pageSize, custfactory;
+        // let page, pageSize, custfactory;
         // http://localhost:8080/dazong/manager/demindinfo/getCustAndDemindPage.html
+        // $.ajax({
+        //     url: "http://192.168.124.9:80/canggang/manager/login",
+        //     type: "post",
+        //     data: {
+        //         password: '4M8S3C2Rm%2BIBPe6Yh0Ll8w==',
+        //         mobile: "17700008851"
+        //     },
+        //     success: (data) => {
+
+        //     }
+        // })
+    </script>
+    <script>
         $.ajax({
-            url: "http://192.168.124.9:80/canggang/manager/login",
-            type: "post",
+            url: "http://192.168.124.9:80/chengpei/manager/login.html",
+            type: "Post",
             data: {
                 password: '4M8S3C2Rm%2BIBPe6Yh0Ll8w==',
                 mobile: "17700008851"
             },
-            success: (data) => {
-
+            success: (res) => {
+                console.log(res)
             }
         })
     </script>

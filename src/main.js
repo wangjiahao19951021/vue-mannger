@@ -8,7 +8,6 @@ import './assets/css/icon.css';
 import 'babel-polyfill';
 //处理axios，让组件通过this.$http来使用
 import axios from "axios"
-// import axios from "./axios"
 import store from "./store"
 axios.defaults.withCredentials = true;
 Vue.prototype.$http = axios
@@ -25,10 +24,8 @@ import config from "./commonjs/config"
 Vue.prototype.$config = config;
 Vue.prototype.$img_url = config.img_url;
 
-
-
-import { Loading } from "element-ui"
-Vue.use(Loading);
+// import { Loading } from "element-ui"
+// Vue.use(Loading);
 let loading;
 function startLoading() {    //使用Element loading-start 方法
   loading = ElementUI.Loading.service({
@@ -41,7 +38,6 @@ function startLoading() {    //使用Element loading-start 方法
 function endLoading() {    //使用Element loading-close 方法
   loading.close()
 }
-
 axios.interceptors.request.use(
     config => {
         startLoading()
@@ -69,6 +65,11 @@ axios.interceptors.response.use(function (response) {
     // console.log(response)
     // 对响应数据做点什么
     endLoading()
+    if (response.data.code == 9000) {
+        ElementUI.Message.error('登录会话过期，请重新登录');
+        store.commit('SYNC_UPDATE', "")
+        router.push('/login');
+    }
     return response;
 }, function (error) {
     // 对响应错误做点什么

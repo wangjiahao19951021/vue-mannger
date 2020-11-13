@@ -1,19 +1,19 @@
 <template>
-    <div class="login-wrap">
-        <div class="ms-login">
-            <div class="ms-title">用户登录</div>
-            <el-form :model="param" ref="login" label-width="0px" class="ms-content">
-                <el-form-item prop="username">
-                    <el-input v-model="param.username" placeholder="username">
-                        <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
-                    </el-input>
-                </el-form-item>
-                <el-form-item prop="password">
-                    <el-input type="password" placeholder="password" v-model="param.password" @keyup.enter.native="submitForm()">
-                        <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
-                    </el-input>
-                </el-form-item>
-                <!-- <div>
+<div class="login-wrap">
+    <div class="ms-login">
+        <div class="ms-title">用户登录</div>
+        <el-form :model="param" ref="login" label-width="0px" class="ms-content">
+            <el-form-item prop="username">
+                <el-input v-model="param.username" placeholder="username">
+                    <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
+                </el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+                <el-input type="password" placeholder="password" v-model="param.password" @keyup.enter.native="submitForm()">
+                    <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
+                </el-input>
+            </el-form-item>
+            <!-- <div>
                     <el-form-item>
                     <el-input
                         type="text"
@@ -27,17 +27,19 @@
                         <img :src="src" alt="" @click="" class="yzm">
                     </div>
                 </div> -->
-                <div class="login-btn">
-                    <el-button type="primary" @click="submitForm()">登录</el-button>
-                </div>
-                <p class="login-tips">&copy; 河北集宗科技有限公司&nbsp;版权所有</p>
-            </el-form>
-        </div>
+            <div class="login-btn">
+                <el-button type="primary" @click="submitForm()">登录</el-button>
+            </div>
+            <p class="login-tips">&copy; 河北集宗科技有限公司&nbsp;版权所有</p>
+        </el-form>
     </div>
+</div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import {
+    mapActions
+} from 'vuex';
 export default {
     name: 'codetest',
     data() {
@@ -48,9 +50,21 @@ export default {
                 circ: '1234'
             },
             rules: {
-                username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-                password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-                circ: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+                username: [{
+                    required: true,
+                    message: '请输入用户名',
+                    trigger: 'blur'
+                }],
+                password: [{
+                    required: true,
+                    message: '请输入密码',
+                    trigger: 'blur'
+                }],
+                circ: [{
+                    required: true,
+                    message: '请输入验证码',
+                    trigger: 'blur'
+                }]
             },
             value: '',
             values: ''
@@ -96,13 +110,6 @@ export default {
                                     this.$router.push('/');
                                 }
                             });
-                        // this.$http.get('/static/json/menu.json', {}).then((res) => {
-                        //     if (res.data) {
-                        //         sessionStorage.setItem('menu', JSON.stringify(res.data));
-                        //         this.$message.success('登录成功');
-                        //         this.$router.push('/');
-                        //     }
-                        // });
                     } else {
                         this.$message.error(res.data.message);
                         console.log('error submit!!');
@@ -126,6 +133,7 @@ export default {
     bottom: 0;
     right: 0;
 }
+
 .ms-title {
     width: 100%;
     line-height: 50px;
@@ -134,6 +142,7 @@ export default {
     color: #666666;
     border-bottom: 1px solid #ddd;
 }
+
 .ms-login {
     position: absolute;
     left: 50%;
@@ -144,18 +153,22 @@ export default {
     background: rgba(255, 255, 255, 0.8);
     overflow: hidden;
 }
+
 .ms-content {
     padding: 30px 30px;
 }
+
 .login-btn {
     text-align: center;
 }
+
 .login-btn button {
     width: 100%;
     height: 36px;
     margin-bottom: 10px;
     margin-top: 20px;
 }
+
 .login-tips {
     font-size: 12px;
     line-height: 30px;
@@ -166,9 +179,11 @@ export default {
     border: 1px solid rgb(199, 198, 198);
     border-radius: 20%;
 }
+
 .yzm_box {
     display: flex;
 }
+
 .yzm {
     margin: 0 auto;
 }

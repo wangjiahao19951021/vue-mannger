@@ -1,53 +1,40 @@
 <template>
-    <div class="login-wraps1">
-        <el-tabs type="border-card" shadow="always">
-            <el-tab-pane :label="title"></el-tab-pane>
-            <el-form ref="form" :model="form" label-width="100px" :label-position="labelPosition">
-                <el-form-item label="运输日期">
-                    <el-date-picker
-                        v-model="form.data_value"
-                        type="date"
-                        placeholder="选择日期"
-                        format="yyyy 年 MM 月 dd 日"
-                        value-format="yyyy-MM-dd"
-                        style="width: 100%;"
-                    >
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="添加运费">
-                    <el-input v-model="form.money" placeholder="请输入运费" type="number"><i slot="prefix" class="el-input__icon el-icon-money"></i></el-input>
-                </el-form-item>
-                <el-form-item label="选择收货方">
-                    <el-input v-model="form.cust_name" :disabled="true" placeholder="请选择收货方">
-                        <i slot="prefix" class="el-input__icon el-icon-position"></i>
-                        <el-button slot="append" type="primary" icon="el-icon-position" @click="select2">选择</el-button>
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="选择车辆">
-                    <el-input v-model="form.plate_number" :disabled="true" placeholder="请选择车辆">
-                        <i slot="prefix" class="el-input__icon el-icon-check"></i>
-                        <el-button slot="append" type="primary" icon="el-icon-check" @click="select1">选择</el-button>
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="选择货物">
-                    <el-input v-model="form.goods" :disabled="true" placeholder="请选择货物">
-                        <i slot="prefix" class="el-input__icon el-icon-shopping-cart-2"></i>
-                        <el-button type="primary" slot="append" icon="el-icon-shopping-cart-2" @click="select3">选择</el-button>
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="添加备注">
-                    <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="form.remark"> </el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onSubmit">立即发布</el-button>
-                    <el-button @click="reset">重置</el-button>
-                </el-form-item>
-            </el-form>
-        </el-tabs>
-        <selectPer ref="selectPer"></selectPer>
-        <selsectAddress ref="selsectAddress"></selsectAddress>
-        <selectGoods ref="selectGoods"></selectGoods>
-    </div>
+<div class="login-wraps1">
+    <el-tabs type="border-card" shadow="always">
+        <el-tab-pane :label="title"></el-tab-pane>
+        <el-form ref="form" :model="form" label-width="100px" :label-position="labelPosition">
+            <el-form-item label="运输日期">
+                <el-date-picker v-model="form.data_value" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" style="width: 100%;">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="添加运费">
+                <el-input v-model="form.money" placeholder="请输入运费" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="选择车辆">
+                <el-input v-model="form.plate_number" placeholder="请选择车辆" @focus="select1" :readonly="true">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="选择收货方">
+                <el-input v-model="form.cust_name" placeholder="请选择收货方" @focus="select2" :readonly="true">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="选择货物">
+                <el-input v-model="form.goods" placeholder="请选择货物" @focus="select3" :readonly="true">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="添加备注">
+                <el-input type="textarea" :rows="10" placeholder="请输入内容" v-model="form.remark"> </el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onSubmit">立即发布</el-button>
+                <el-button @click="reset">重置</el-button>
+            </el-form-item>
+        </el-form>
+    </el-tabs>
+    <selectPer ref="selectPer"></selectPer>
+    <selsectAddress ref="selsectAddress"></selsectAddress>
+    <selectGoods ref="selectGoods"></selectGoods>
+</div>
 </template>
 
 <script>
@@ -77,7 +64,8 @@ export default {
                 goods: '',
                 goods_id: '',
                 goods_num: '',
-                goods_unit: ''
+                goods_unit: '',
+                goods_weights: ''
             }
         };
     },
@@ -142,7 +130,8 @@ export default {
                     goodsCount: this.form.goods_num,
                     goodsPriceUnit: this.form.goods_unit,
                     fare: this.form.money,
-                    remark: this.form.remark
+                    remark: this.form.remark,
+                    weights: this.form.goods_weights
                 })
                 .then((res) => {
                     if (res.data.success) {
@@ -179,10 +168,11 @@ export default {
         select3() {
             this.$refs.selectGoods.qingqiu();
             Bus.$on('goods', (result) => {
-                this.form.goods = result.selectedWorkName.goodsName + ' ' + result.num + ' ' + result.selectedWorkNames.label;
+                this.form.goods = result.selectedWorkName.goodsName + ' ' + result.num + ' ' + result.selectedWorkNames.label + ' ' + result.weights + ' ' + '吨';
                 this.form.goods_id = result.selectedWorkName.goodsId;
                 this.form.goods_num = result.num;
                 this.form.goods_unit = result.selectedWorkNames.value;
+                this.form.goods_weights = result.weights
             });
         },
         reset() {
@@ -201,14 +191,15 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .login-wraps1 {
     height: 100%;
 }
+
 .el-tabs {
     min-height: 100% !important;
 }
+
 .el-pagination {
     text-align: center;
 }
