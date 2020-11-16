@@ -24,6 +24,7 @@ import config from "./commonjs/config"
 Vue.prototype.$config = config;
 Vue.prototype.$img_url = config.img_url;
 
+
 // import { Loading } from "element-ui"
 // Vue.use(Loading);
 let loading;
@@ -75,7 +76,6 @@ axios.interceptors.response.use(function (response) {
     // 对响应错误做点什么
     return Promise.reject(error);
 });
-
 
 
 new Vue({

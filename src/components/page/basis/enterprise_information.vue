@@ -3,86 +3,78 @@
     <el-tabs type="border-card">
         <el-tab-pane :label="title">
             <el-form ref="add" :model="add" label-width="120px" :label-position="labelPosition" :rules="rules">
-                <el-form-item label="添加商品" prop='custName'>
-                    <el-input v-model="add.custName" placeholder="请输入商品名称"></el-input>
+                <el-form-item label="公司名称" prop='factoryName'>
+                    <el-input v-model="add.factoryName" placeholder="请输入公司名称" :disabled="editor"></el-input>
                 </el-form-item>
-                <el-form-item label="货物级别" prop='radio'>
-                    <el-radio v-model="add.radio" label="1">一级货物</el-radio>
+                <el-form-item label="联系人姓名" prop='contacts'>
+                    <el-input v-model="add.contacts" placeholder="请输入联系人姓名" :disabled="editor"></el-input>
                 </el-form-item>
-                <el-form-item label="展示顺序" prop='listOrder'>
-                    <el-input v-model="add.listOrder" placeholder="请输入展示顺序" type="number"></el-input>
+                <el-form-item label="联系电话" prop='mobile'>
+                    <el-input v-model="add.mobile" placeholder="请输入联系电话" type="number" :disabled="editor"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="add_shop">添 加</el-button>
-                    <el-button @click="add_reset">重 置</el-button>
+                    <el-button type="primary" @click="editors">编 辑</el-button>
+                    <el-button @click="add_shop" :disabled="editor">保 存</el-button>
                 </el-form-item>
             </el-form>
         </el-tab-pane>
     </el-tabs>
-    <selectMap ref="selectMap"></selectMap>
 </div>
 </template>
 
 <script>
-import selectMap from './mask/select_map';
-import Bus from '../../common/bus/bus';
 export default {
-    components: {
-        selectMap
-    },
+    components: {},
     data() {
         return {
             labelPosition: 'left',
-            form: {
-                custName: ''
-            },
             title: '',
             add: {
-                custName: "",
-                listOrder: "",
-                radio: "1"
+                factoryName: "",
+                contacts: "",
+                mobile: "",
             },
-            area_options: [],
             rules: {
-                custName: [{
+                factoryName: [{
                     required: true,
-                    message: '请输入商品名称',
+                    message: '请输入公司名称',
                 }],
-                radio: [{
+                contacts: [{
                     required: true,
-                    message: '请输入商品名称',
+                    message: '请输入联系人姓名',
                 }],
-                listOrder: [{
+                mobile: [{
                     required: true,
-                    message: '请输入展示顺序',
+                    message: '请输入联系电话',
                 }],
-            }
+            },
+            editor: true
         };
     },
     methods: {
-        handleChange(value) {
-            console.log(value);
+        test() {
+            const data = this.basicColumnChartProp.data;
+            const chart = new G2.Chart({
+                container: this.basicColumnChartProp.container,
+                width: this.basicColumnChartProp.width,
+                height: this.basicColumnChartProp.height
+            });
+            chart.source(data);
+            chart.interval().position('genre*sold').color('genre')
+            chart.render();
         },
-        add_reset() {
-            this.add.custName = '';
-            this.add.listOrder = '';
-            this.$refs.add.resetFields();
+
+        editors() {
+            this.editor = false
         },
         add_shop() {
             this.$refs.add.validate((valid) => {
                 if (valid) {
-                    /*
-                     *      /goods/addGoods.html
-                     *      goodsName: 测试
-                     *      parentId: 
-                     *      goodsLevel: 1
-                     *      listOrder: 2
-                     */
                     this.$http
-                        .post(this.$config.ajax_url + '/goods/addGoods.html', {
-                            goodsName: this.add.custName,
-                            goodsLevel: this.add.radio,
-                            listOrder: this.add.listOrder,
+                        .post(this.$config.ajax_url + '/updatememberInfo.html', {
+                            factoryName: this.add.factoryName,
+                            contacts: this.add.contacts,
+                            mobile: this.add.mobile,
                         })
                         .then((res) => {
                             if (res.data.success) {
@@ -90,7 +82,7 @@ export default {
                                     confirmButtonText: '确定',
                                     type: 'success',
                                     callback: (action) => {
-                                        this.add_reset();
+                                        this.editor = true
                                     }
                                 });
                             } else {
@@ -107,19 +99,26 @@ export default {
                 }
             })
         },
-        selectMap() {
-            this.$refs.selectMap.qingqiu();
-            Bus.$on('address_map', (result) => {
-                this.add.address = result.address;
-                this.add.longitude = result.longitude;
-                this.add.latitude = result.latitude;
-            });
-        },
+        information() {
+            this.$http
+                .post(this.$config.ajax_url + '/quermemberInfo.html', {})
+                .then((res) => {
+                    if (res.data.data) {
+                        this.add.factoryName = res.data.data.factoryName
+                        this.add.contacts = res.data.data.contacts
+                        this.add.mobile = res.data.data.mobile
+                    }
+                });
+        }
     },
     mounted() {
         this.title = this.$route.meta.title;
+        this.test()
+
     },
-    created() {}
+    created() {
+        this.information()
+    }
 };
 </script>
 
