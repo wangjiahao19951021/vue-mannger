@@ -118,6 +118,11 @@ const router = new Router({
                     meta: { title: '商品添加', permission: true }
                 },
                 {
+                    path: '/2005',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/basis/enterprise_information.vue'),
+                    meta: { title: '企业信息管理', permission: true }
+                },
+                {
                     path: '/404',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/404/404.vue'),
                     meta: { title: '404', }

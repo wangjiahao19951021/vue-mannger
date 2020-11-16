@@ -17,7 +17,7 @@
                     <el-input v-model="add.contacts" placeholder="请输入联系人"></el-input>
                 </el-form-item>
                 <el-form-item label="添加联系电话" prop='telephone'>
-                    <el-input v-model="add.telephone" placeholder="请输入联系电话"></el-input>
+                    <el-input v-model="add.telephone" placeholder="请输入联系电话" type="number"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="add_shop">添 加</el-button>
