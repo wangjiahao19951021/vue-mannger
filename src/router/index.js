@@ -128,6 +128,11 @@ const router = new Router({
                     meta: { title: '车辆里程统计', permission: true }
                 },
                 {
+                    path: '/230102',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/statistics/statistics2.vue'),
+                    meta: { title: '车辆能耗统计', permission: true }
+                },
+                {
                     path: '/404',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/404/404.vue'),
                     meta: { title: '404', }

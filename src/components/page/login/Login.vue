@@ -1,45 +1,35 @@
 <template>
-<div class="login-wrap">
-    <div class="ms-login">
-        <div class="ms-title">用户登录</div>
-        <el-form :model="param" ref="login" label-width="0px" class="ms-content">
-            <el-form-item prop="username">
-                <el-input v-model="param.username" placeholder="username">
-                    <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
-                </el-input>
-            </el-form-item>
-            <el-form-item prop="password">
-                <el-input type="password" placeholder="password" v-model="param.password" @keyup.enter.native="submitForm()">
-                    <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
-                </el-input>
-            </el-form-item>
-            <!-- <div>
-                    <el-form-item>
-                    <el-input
-                        type="text"
-                        placeholder="请输入验证码"
-                        v-model="param.circ"
-                        @keyup.enter.native="submitForm()"
-                    >
+    <div class="login-wrap">
+        <div class="ms-login">
+            <div class="ms-title">用户登录</div>
+            <el-form :model="param" ref="login" label-width="0px" class="ms-content">
+                <el-form-item prop="username">
+                    <el-input v-model="param.username" placeholder="username">
+                        <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
                     </el-input>
-                    </el-form-item>
-                    <div class="yzm_box">
-                        <img :src="src" alt="" @click="" class="yzm">
-                    </div>
-                </div> -->
-            <div class="login-btn">
-                <el-button type="primary" @click="submitForm()">登录</el-button>
-            </div>
-            <p class="login-tips">&copy; 河北集宗科技有限公司&nbsp;版权所有</p>
-        </el-form>
+                </el-form-item>
+                <el-form-item prop="password">
+                    <el-input type="password" placeholder="password" v-model="param.password" @keyup.enter.native="submitForm()">
+                        <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input type="text" placeholder="请输入验证码" v-model="param.code" @keyup.enter.native="submitForm()"></el-input>
+                </el-form-item>
+                <div class="yzm_box">
+                    <img :src="verification_code" alt="" class="yzm" @click="qehuan" />
+                </div>
+                <div class="login-btn">
+                    <el-button type="primary" @click="submitForm()">登录</el-button>
+                </div>
+                <p class="login-tips">&copy; 河北集宗科技有限公司&nbsp;版权所有</p>
+            </el-form>
+        </div>
     </div>
-</div>
 </template>
 
 <script>
-import {
-    mapActions
-} from 'vuex';
+import { mapActions } from 'vuex';
 export default {
     name: 'codetest',
     data() {
@@ -47,30 +37,40 @@ export default {
             param: {
                 username: 'admin',
                 password: '123123',
-                circ: '1234'
+                code: ''
             },
             rules: {
-                username: [{
-                    required: true,
-                    message: '请输入用户名',
-                    trigger: 'blur'
-                }],
-                password: [{
-                    required: true,
-                    message: '请输入密码',
-                    trigger: 'blur'
-                }],
-                circ: [{
-                    required: true,
-                    message: '请输入验证码',
-                    trigger: 'blur'
-                }]
+                username: [
+                    {
+                        required: true,
+                        message: '请输入用户名',
+                        trigger: 'blur'
+                    }
+                ],
+                password: [
+                    {
+                        required: true,
+                        message: '请输入密码',
+                        trigger: 'blur'
+                    }
+                ],
+                circ: [
+                    {
+                        required: true,
+                        message: '请输入验证码',
+                        trigger: 'blur'
+                    }
+                ]
             },
             value: '',
-            values: ''
+            values: '',
+            verification_code: this.$config.ajax_url + '/captcha/login.html'
         };
     },
     methods: {
+        qehuan() {
+            this.verification_code = this.verification_code + '?1';
+        },
         submitForm() {
             let that = this;
             if (this.param.username == '') {
@@ -81,7 +81,7 @@ export default {
                 this.$message.error('请输入密码');
                 return;
             }
-            if (this.param.circ == '') {
+            if (this.param.code == '') {
                 this.$message.error('请输入验证码');
                 return;
             }
@@ -90,22 +90,22 @@ export default {
                 .post(this.$config.ajax_url + '/login.html', {
                     username: this.param.username,
                     password: this.$AES.Encrypt(this.param.password),
-                    captcha: this.param.circ
+                    captcha: this.param.code
                 })
                 .then((res) => {
                     if (res.data.message == 'success') {
                         let mes = res.data.message;
-                        this.$store.commit('SYNC_UPDATE', res)
+                        this.$store.commit('SYNC_UPDATE', res);
                         this.$http
                             .post(this.$config.ajax_url + '/main/buildMenu.html', {
                                 token: res.data.data
                             })
                             .then((res) => {
                                 if (res.data.success) {
-                                    let data = this.$store.state.users
-                                    data.menus = res
+                                    let data = this.$store.state.users;
+                                    data.menus = res;
                                     // 同步
-                                    this.$store.commit('SYNC_UPDATE', data)
+                                    this.$store.commit('SYNC_UPDATE', data);
                                     this.$message.success('登录成功');
                                     this.$router.push('/');
                                 }
